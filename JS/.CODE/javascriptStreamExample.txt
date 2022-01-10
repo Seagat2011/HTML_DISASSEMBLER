@@ -1,0 +1,17 @@
+function load_binary_resource( url ){
+  var xhr = new XMLHttpRequest()
+  .
+  .
+  .
+  return xhr.responseText
+}
+
+var fileStream = load_binary_resource( url )
+var abyte = fileStream.charCodeAt( x ) & oxff // throw away high-order byte (f7)
+
+/*
+
+The example above fetches the byte at offset 'x' within the loaded binary data.
+The valid range for 'x' is from 0 to fileStream.length - 1
+
+*/

@@ -1,0 +1,41 @@
+SYMP: re-decode dump operation performs scrollTop operation and fails to reload file for parsing
+SOLU: if(w && w.name && (w.name != self.url)) => if(w && w.name && ((w.name != self.url) || (self.lastFlag != f)))
+
+SYMP: decode errors | xAMD64[ '20' ]='' decodes as xAMD64[ '35' ] = 'xor', ... etc.
+SOLU: eg x86AMD64[w] => x86AMD64[v]
+
+SYMP: textresult.innerHTML.asSrcTAGStream outputs incorrect formatting
+PATCH1: Disable textresult callback
+PATCH2: Add
+
+    asSrcTAGStream = function(){
+        if( v.match(/\s/)){
+            v = '&nbsp;'
+        } else
+        if(v.match(/\t/)){
+            v = '&nbsp;&nbsp;&nbsp;&nbsp;'
+        } else
+        if(v.match(/[\n\r]/)){
+            return '<br>'
+        }
+        return v.asTAG('src'); 
+        })
+    }
+    
+SOLU: Fixed
+
+    asSrcTAGStream = function(){
+        var self = this
+        return self.map(function(v,i,me){ 
+                if(v.match(' ')){
+                    v = '&nbsp;'
+                } else
+                if(v.match('\t')){
+                    v = '&nbsp;&nbsp;&nbsp;&nbsp;'
+                } else
+                if(v.match('\n')){
+                    return '<br>'
+                }
+            return v.asTAG('src'); 
+            })
+    }

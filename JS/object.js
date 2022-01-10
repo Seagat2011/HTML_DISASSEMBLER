@@ -1,0 +1,62 @@
+
+Object.prototype.toHex = function(){
+  return `${ this < 16 ? '0':'' }${ this.toString( 16 ) }`
+}
+
+Object.prototype._num2bytes = function(sData) {
+  return(new Uint8Array(sData.length).map(
+    function(w,nIdx){
+      return (w & 0xff)
+    })
+  )
+}
+
+Object.prototype._ch2bytes = function(sData) {
+  /* send as ArrayBufferView...: */
+  // this.send(ui8Data)
+  /* ...or as ArrayBuffer (legacy)...:*/
+  // this.send(ui8Data.buffer)
+  return(new Uint8Array(sData.length).map(
+    function(w,nIdx){
+      return (sData.charCodeAt(nIdx) & 0xff)
+    })
+  )
+}
+
+Object.prototype._uint8ToHex = function(){
+    `${ this < 16 ? '0':'' }${ this.toString( 16 ) }`
+}
+
+Object.prototype._hexToUint8 = function(){
+    return __hexToUint8__[ this ]
+}
+
+Object.prototype.asTAGStream = function(u){
+    var self = this
+    return self.map(function(v,i,me){ return v.asTAG(u) })
+}
+
+Object.prototype.asByteTAGStream = function(){
+    var self = this
+    return self.map(function(v,i,me){ return v.asTAG('byte') })
+}
+
+Object.prototype.asSrcTAGStream = function(){
+    var self = this
+    return self.map(function(v,i,me){ 
+            if(v.match(' ')){
+                v = '&nbsp;'
+            } else
+            if(v.match('\t')){
+                v = '&nbsp;&nbsp;&nbsp;&nbsp;'
+            } else
+            if(v.match('\n')){
+                return '<br>'
+            }
+        return v.asTAG('src'); 
+        })
+}
+
+Object.prototype.asTAG = function(u){
+    return `<${u}>${this}</${u}>`
+}

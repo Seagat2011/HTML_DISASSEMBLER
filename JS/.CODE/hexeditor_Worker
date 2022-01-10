@@ -1,0 +1,56 @@
+
+var g_charSet = {}
+
+"1234567890`~!@#$%^&*()-_=+\\;:'\"|,<.>/?{}[]abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ   "
+.split("")
+.map(function(w){
+  g_charSet[w.charCodeAt()] = w
+})
+
+Object.prototype.toHex = function(){
+  return this < 16 ? '0'+this.toString( 16 ) : this.toString( 16 )
+}
+
+addEventListener("message",__stream__,"hexeditor.htm")
+
+function __stream__(e){
+  var self = e.data.streams // streams
+  var params = e.data.params
+  var xhr = new XMLHttpRequest()
+  var async = true
+  xhr.open(params.putget,params.url,async)
+  xhr.responseType = "arraybuffer"
+  xhr.onreadystatechange = function(e){
+    var banner = [
+      function(){
+        postMessage({ msg : "Processing file...", target : "status_window" }) // return "Processing file..." // 0 UNSENT
+      }, 
+      function(){
+        postMessage({ msg : "Opening file...", target : "status_window" }) // return "Opening file..."    // 1 OPENED
+      },
+      function(){
+        postMessage({ msg : "Initializing...", target : "status_window" }) // return "Initializing..."    // 2 HEADERS_RECEIVED
+      },
+      function(){
+        postMessage({ msg : "Loading file...", target : "status_window" }) // return "Loading file..."    // 3 LOADING
+      },
+      function(){ 
+        self.byteStream = new Uint8Array( xhr.response )
+        self.codeStream = new Array()
+        self.textStream = new Array()
+        self.byteStream.map(
+          function(w,i){
+            var v = w.toHex()
+            self.codeStream[i] = v
+            self.textStream[i] = g_charSet[w] || v
+            return w
+          })
+        self.code_editor_value = self.codeStream.slice(0,Math.min(self.scrollDirective,self.codeStream.length)).join(" ")
+        self.text_editor_value = self.textStream.slice(0,Math.min(self.scrollDirective,self.textStream.length)).join("")
+        postMessage({ msg : "Ready", self : self, target : "byteStream" }) // return "Ready"  // 4 DONE
+      },
+    ]
+    banner [ xhr.readyState ] () || Error("Error parsing bitstream - Please try again.")
+  }
+  xhr.send()
+}

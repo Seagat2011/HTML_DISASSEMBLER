@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml" hasBrowserHandlers="true">
+<head>
+<title>Hex Live Editor + Disassembler v1.0.0.0</title>
+<meta charset="utf-8">
+
+<link href=CSS/hexeditor.css rel="stylesheet">
+
+<script src=JS/hexToUint8.js></script>
+<script src=JS/object.js></script>
+<script src=JS/charset8.js></script>
+<script src=JS/charset16.js></script>
+<script src=JS/x86AMD64.js></script>
+<script src=JS/x86IA32.js></script>
+<script src=JS/x86IA64.js></script>
+<script src=JS/hexeditor.index.js></script>
+<script src=JS/hexeditor.js defer></script>
+
+</head>
+<table style="width: 100%">
+<tbody>
+<tr>
+<td>
+<div style="float:left">
+<input id=btnStream type=file />
+<br><br>
+<input id=btnDump type=button value="Dump file" />  <input id=btnClear type=button value="clear source window"/> 
+</div>
+<div style="float:left">
+<div id=divUTF8 style="display: inline;"><input id=btnUTF8 type=radio checked=TRUE/><label style="cursor: hand;"> > UTF-8 decode </label></div>
+<div id=divUTF16 style="display: inline;"><input id=btnUTF16 type=radio /><label style="cursor: hand;"> > UTF-16 decode </label></div>
+<br>
+<div id=divAMD64 style="display: inline;"><input id=btnAMD64 type=radio /><label style="cursor: hand;"> > AMD64 decode </label></div>
+<div id=divX86IA32 style="display: inline;"><input id=btnX86IA32 type=radio /><label style="cursor: hand;"> > Intel x86 32-bit decode </label></div>
+<div id=divX86IA64 style="display: inline;"><input id=btnX86IA64 type=radio /><label style="cursor: hand;"> > Intel x86 64-bit decode </label></div>
+</div>
+<div id=loadstatus style="float:right">Ready</div>
+</td>
+</tr>
+</tbody>
+</table>
+<br>
+<div id=frm00>
+<code id=byteresult spellcheck=false contenteditable></code>
+<source id=textresult spellcheck=false contenteditable></source>
+</div>
+<br>
+<editorAttributes>
+<input id=btnSaveStream type=file />
+<div id=divCode00 style="display: inline;"><input id=code00 type="radio" checked=TRUE /> <label style="cursor: hand;"> > byte code + assembly</label> </div> 
+<div id=divCode01 style="display: inline;"><input id=code01 type="radio" /> <label style="cursor: hand;"> > assembly</label> </div> 
+<div id=divCode02 style="display: inline;"><input id=code02 type="radio" /> <label style="cursor: hand;"> > byte code</label> </div>
+<br>
+<input id=btnSave type=button value=" Save " />
+</editorAttributes>
+<footer></footer>
+</html>

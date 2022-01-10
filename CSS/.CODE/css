@@ -1,0 +1,29 @@
+
+
+textarea {
+  width : /*540px;*/49%;
+  height : /*700px;*/73%;
+  overflow : auto;
+  color: #808080;
+  outline: none;
+  display: inline;
+}
+
+textarea {
+  width : 49%; 
+  height : 73%; 
+  overflow : auto;
+  /*font-color : #808080;*/
+  color: /*cadetblue*/ #808080;
+  outline: none;
+  display: inline;
+}
+
+/*
+.fullview {
+  width : 100%; 
+}*/
+/*
+form {
+  display : inline;
+}*/

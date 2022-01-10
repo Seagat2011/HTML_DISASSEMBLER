@@ -1,0 +1,171 @@
+
+  this.callback = function(){
+    var a = [
+      function(){/*
+          self.code_editor.innerHTML = self.codeStream.asByteTAGStream().join(" ")
+          self.text_editor.innerHTML = self.textStream.asSrcTAGStream().join("")
+          self.proceed = false*/
+          /*
+        try{
+          if(self.byteScroll_pixelTop+self.byteScrollTop<self.codeStream.length){
+            var stride = self.byteScroll_pixelTop+self.byteScrollTop
+            self.code_editor.innerHTML += self.codeStream.slice(self.byteScroll_pixelTop,stride).asByteTAGStream().join(" ") + " "
+            self.byteScroll_pixelTop += self.byteScrollTop
+            self.proceed = true
+          }
+          else
+          if((self.byteScroll_pixelTop+self.byteScrollTop>=self.codeStream.length) && 
+            (self.byteScroll_pixelTop<self.codeStream.length)){
+            var stride = self.codeStream.length
+            self.code_editor.innerHTML += self.codeStream.slice(self.byteScroll_pixelTop,stride).asByteTAGStream().join(" ") + " "
+            self.byteScroll_pixelTop += self.byteScrollTop
+            self.proceed = false
+          }
+        }
+        catch(e){
+
+        }
+      },
+      function(){
+        try{
+          if(self.textScroll_pixelTop+self.textScrollTop<self.textStream.length){
+            var stride = self.textScroll_pixelTop+self.textScrollTop
+            self.text_editor.innerHTML += self.textStream.slice(self.textScroll_pixelTop,stride).asSrcTAGStream().join("")
+            self.textScroll_pixelTop += self.textScrollTop
+            self.proceed = true
+          }
+          else
+          if((self.textScroll_pixelTop+self.textScrollTop>=self.textStream.length) &&
+            (self.textScroll_pixelTop<self.textStream.length)){
+            var stride = self.textStream.length
+            self.text_editor.innerHTML += self.textStream.slice(self.textScroll_pixelTop,stride).asSrcTAGStream().join("")
+            self.textScroll_pixelTop += self.textScrollTop
+            self.proceed = false
+          }
+        }
+        catch(e){
+
+        }
+        */
+      },
+    ]
+    if(self.proceed){
+      a.map(function(w){
+        return w()
+      })
+    }
+  }
+  
+utf-16 decode (big endian)
+(charw[w] >>= 8 ) & 0xff // high byte //
+char[w] & 0xff // low byte //
+
+// byte //
+<byte id=_bloc_10138>20</byte>
+// src //
+<src id=_sloc_10138>add</src>
+
+// byte //
+<byte id=_bloc_10_138>20</byte>
+// src //
+<src id=_sloc_10_138>add</src>
+
+src:addEventListener('keydown',(e)=>{ console.log( e ) },1)
+byte:addEventListener('keydown',(e)=>{ console.log( e ) },1)
+div:addEventListener('keydown',(e)=>{ console.log( e ) },1)
+
+//
+
+  this.callback = function(){
+    var a = [
+      function(){
+        try{
+          if(self.byteScroll_pixelTop+self.byteScrollTop<self.codeStream.length){
+            var stride = self.byteScroll_pixelTop+self.byteScrollTop
+            self.code_editor.innerText += self.codeStream.slice(self.byteScroll_pixelTop,stride).join(" ") + " "
+            self.byteScroll_pixelTop += self.byteScrollTop
+          }
+          else
+          if((self.byteScroll_pixelTop+self.byteScrollTop>=self.codeStream.length) && 
+            (self.byteScroll_pixelTop<self.codeStream.length)){
+            var stride = self.codeStream.length
+            self.code_editor.innerText += self.codeStream.slice(self.byteScroll_pixelTop,stride).join(" ") + " "
+            self.byteScroll_pixelTop += self.byteScrollTop
+          }
+        }
+        catch(e){
+        
+        }
+      },
+      function(){
+        try{
+          if(self.textScroll_pixelTop+self.textScrollTop<self.textStream.length){
+            var stride = self.textScroll_pixelTop+self.textScrollTop
+            self.text_editor.innerText += self.textStream.slice(self.textScroll_pixelTop,stride).join("")
+            self.textScroll_pixelTop += self.textScrollTop
+          }
+          else
+          if((self.textScroll_pixelTop+self.textScrollTop>=self.textStream.length) &&
+            (self.textScroll_pixelTop<self.textStream.length)){
+            var stride = self.textStream.length
+            self.text_editor.innerText += self.textStream.slice(self.textScroll_pixelTop,stride).join("")
+            self.textScroll_pixelTop += self.textScrollTop
+          }
+        }
+        catch(e){
+        
+        }
+      },
+    ]
+    if(self.proceed){
+      a.map(function(w){
+        return w()
+      })
+    }
+  }
+
+/*
+btnStream.onmessage = function(e){
+    console.log( e.toString )
+}*/
+
+    var a = [
+      function(){
+        try{
+          if(self.byteScroll_pixelTop+self.byteScrollTop<self.codeStream.length){
+            var stride = self.byteScroll_pixelTop+self.byteScrollTop
+            self.code_editor.value += self.codeStream.slice(self.byteScroll_pixelTop,stride).join(" ") + " "
+            self.byteScroll_pixelTop += self.byteScrollTop
+          }
+          else
+          if((self.byteScroll_pixelTop+self.byteScrollTop>=self.codeStream.length) && 
+            (self.byteScroll_pixelTop<self.codeStream.length)){
+            var stride = self.codeStream.length
+            self.code_editor.value += self.codeStream.slice(self.byteScroll_pixelTop,stride).join(" ") + " "
+            self.byteScroll_pixelTop += self.byteScrollTop
+          }
+        }
+        catch(e){
+        
+        }
+      },
+      function(){
+        try{
+          if(self.textScroll_pixelTop+self.textScrollTop<self.textStream.length){
+            var stride = self.textScroll_pixelTop+self.textScrollTop
+            self.text_editor.value += self.textStream.slice(self.textScroll_pixelTop,stride).join("")
+            self.textScroll_pixelTop += self.textScrollTop
+          }
+          else
+          if((self.textScroll_pixelTop+self.textScrollTop>=self.textStream.length) &&
+            (self.textScroll_pixelTop<self.textStream.length)){
+            var stride = self.textStream.length
+            self.text_editor.value += self.textStream.slice(self.textScroll_pixelTop,stride).join("")
+            self.textScroll_pixelTop += self.textScrollTop
+          }
+        }
+        catch(e){
+        
+        }
+      },
+    ]

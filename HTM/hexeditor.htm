@@ -1,0 +1,220 @@
+<html xmlns="http://www.w3.org/1999/xhtml" hasBrowserHandlers="true">
+<head>
+<title>Hex editor engine 1.0.0.0</title>
+<meta charset="utf-8">
+<style>
+
+textarea {
+  width : 73%; 
+  height : 83%; 
+  overflow : auto;
+  font-style : monospace;
+  font-size : 10pt;
+  font-color : #808080;
+}
+
+</style>
+<script>
+
+var charSet = {}
+
+"1234567890`~!@#$%^&*()-_=+\\;:'\"|,<.>/?{}[]abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\t\n "
+.split("")
+.map(function(w){
+  charSet[w.charCodeAt()] = w
+})
+
+Object.prototype.toHex = function(){
+  return this < 16 ? '0'+this.toString( 16 ) : this.toString( 16 )
+}
+
+function ByteStream(code_editor,txt_editor,lstatus){
+  var self = this
+  this.url = ""
+  this.byteStream = 0x00
+  this.codeStream = 0x00
+  this.textStream = ""
+  this.code_editor = code_editor
+  this.text_editor = txt_editor
+  this.status_window = lstatus
+  this.scrollDirective = 1840*2 // 40 lines x 46 columns = 1840 bytes visible //
+  this.byteScrollTop = 1840*2+1
+  this.textScrollTop = 1840*2+1
+  this.byteScroll_pixelTop = 0
+  this.textScroll_pixelTop = 0
+  this.callback = function(){
+    var a = [
+      function(){
+        try{
+          if(self.codeStream && (self.byteScroll_pixelTop+self.byteScrollTop) in self.codeStream){
+            self.code_editor.value += self.codeStream.slice(self.byteScroll_pixelTop,self.byteScroll_pixelTop+self.byteScrollTop).join(" ")
+            self.byteScroll_pixelTop+=self.byteScrollTop
+          }
+        }
+        catch(e){
+        
+        }
+      },
+      function(){
+        try{
+          if(self.byteScroll_pixelTop+self.byteScrollTop && (self.textScroll_pixelTop+self.textScrollTop) in self.textStream){
+            self.text_editor.value += self.textStream.slice(self.textScroll_pixelTop,self.textScroll_pixelTop+self.textScrollTop).join("")
+            self.textScroll_pixelTop+=self.textScrollTop
+          }
+        }
+        catch(e){
+        
+        }
+      },
+    ]
+    a.map(function(w){
+      return w()
+    })
+  }
+  setInterval(this.callback,1)
+}ByteStream.prototype = {}
+
+ByteStream.prototype.__byteStream__ = function (putget){
+  var xhr = new XMLHttpRequest()
+  var async = true
+  xhr.open(putget,this.url,async)
+  xhr.responseType = "arraybuffer"
+  var self = this
+  xhr.onreadystatechange = function(e){
+    var banner = [
+      function(){
+        return "Processing file..." // 0 UNSENT
+        }, 
+      function(){
+        return "Opening file..."    // 1 OPENED
+        },
+      function(){
+        return "Initializing..."    // 2 HEADERS_RECEIVED
+        },
+      function(v){
+        var status = {
+          PUT:function(){
+            return "Saving file..."
+            },
+          GET:function(){
+            return "Loading file..."
+            },
+          default:function(w){
+            var msg = {
+              PUT:"LOAD",
+              GET:"SAVE",
+              }
+            return Error("Unable to complete "+msg[v]+" file operation.")
+            },
+        }
+        return status[v]() || status.default(v)    // 3 LOADING
+        },
+      function(){ 
+        self.byteStream = new Uint8Array( xhr.response )
+        self.codeStream = new Array()
+        self.textStream = new Array()
+        self.byteStream.map(
+          function(w,i){
+            var v = w.toHex()
+            self.codeStream[i] = v
+            self.textStream[i] = charSet[w] || null
+            return w
+          })
+        return "Ready"  // 4 DONE
+        },              
+    ]
+    self.status_window.innerHTML = banner [ xhr.readyState ] (putget) || Error("Error parsing bitstream - Please try again.")
+  }
+  xhr.send()
+}
+
+ByteStream.prototype.codeScrollDown = function (){
+  if(this.codeStream[(this.byteScrollTop)]){
+    this.code_editor.value += " " + this.codeStream.slice(this.byteScrollTop, this.byteScrollTop+92).join(" ")
+    this.byteScrollTop += 92+1
+  }
+}
+
+ByteStream.prototype.textScrollDown = function (){
+  if(this.textStream[(this.textScrollTop)]){
+    this.text_editor.value += this.textStream.slice(this.textScrollTop, this.textScrollTop+92).join("")
+    this.textScrollTop += 92+1
+  }
+}
+
+ByteStream.prototype.openDumpStream = function (w){
+  try{
+    this.url = w.name
+    this.__byteStream__('GET')
+  } 
+  catch(e){
+    console.log(e)
+  }
+}
+
+ByteStream.prototype.saveDumpStream = function (){
+  try{
+    this.__byteStream__('PUT')
+  } 
+  catch(e){
+    console.log(e)
+  }
+}
+
+</script>
+</head>
+<br>
+<input id=btnStream type=file /><br>
+<br>
+<div>
+<input id=btnDump type=button value="Dump file" />  <input id=btnClear type=button value="clear source window"/> 
+<div id=loadstatus style="float : right"> Ready</div>
+</div>
+<br>
+<div>
+<textarea id=byteresult></textarea>
+<textarea id=textresult style="width : 24%;"></textarea>
+</div>
+<input id=btnSave type=button value="Save file" />
+<footer>
+
+<script>
+
+var __file__ = new ByteStream(byteresult, textresult, loadstatus)
+ 
+input:onclick = function(e){
+  var __status__ = {
+    "btnDump" : function(){
+        __file__.openDumpStream(btnStream.files[0])
+        },
+    "btnSave" : function(){
+        __file__.saveDumpStream()
+        },
+    "btnClear" : function(){
+        byteresult.value = ''
+        textresult.value = ''
+        },
+  }
+  if(__status__[e.target.id]){
+    __status__[e.target.id]()
+  }
+}
+
+byteresult.addEventListener("scroll", 
+  function(e){
+    if(e.target.id == 'byteresult'){
+      textresult.scrollTop = e.target.scrollTop
+    }
+  })
+
+textresult.addEventListener("scroll", 
+  function(e){
+    if(e.target.id == 'textresult'){
+      byteresult.scrollTop = e.target.scrollTop
+    }
+  })
+
+</script>
+
+</footer>
+</html>

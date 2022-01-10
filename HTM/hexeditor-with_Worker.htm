@@ -1,0 +1,138 @@
+<html xmlns="http://www.w3.org/1999/xhtml" hasBrowserHandlers="true">
+<head>
+<title>Hex editor engine 1.0.0.0</title>
+<meta charset="utf-8">
+<style>
+
+textarea {
+  width : 73%; 
+  height : 84%; 
+  overlfow : auto;
+  font-style : monospace;
+  font-size : 10pt;
+  font-color : #808080;
+}
+
+</style>
+<script>
+
+var g_WorkerFile = "hexeditor_Worker.00"
+
+function ByteStream(code_editor,txt_editor,lstatus){
+  this.url = ""
+  this.byteStream = 0x00
+  this.codeStream = 0x00
+  this.textStream = ""
+  this.code_editor = code_editor
+  this.text_editor = txt_editor
+  this.status_window = lstatus
+  this.scrollDirective = 1840 /* at any one (1) time, 40 lines * 46 columns = 1840 bytes are no-scroll visible */
+  this.byteScrollWidth = 0
+  this.textScrollWidth = 0
+}ByteStream.prototype = {}
+
+ByteStream.prototype.__byteStream__ = function (putget){
+  var self = this
+  var xr = new Worker(g_WorkerFile)
+  xr.addEventListener('message',function(e){
+    var __status__ = {
+      status_window : function(w){
+        self.status_window.value = w.msg
+        },
+      byteStream : function(w){
+        self.status_window.value = w.msg
+        self.code_editor.value = w.self.code_editor_value
+        self.text_editor.value = w.self.text_editor_value
+        self.byteStream  = w.self.byteStream
+        self.codeStream  = w.self.codeStream
+        self.textStream  = w.self.textStream
+        },
+      default : function(w){
+        throw new Error("Error parsing bitstream from worker - Please try again.")
+        },  
+    } // __status__
+    __status__[ e.data.target ] (e.data) || __status__.default(e.data)
+  },'hexeditor.htm')
+  xr.postMessage({
+    streams:{
+      byteStream : self.byteStream,
+      codeStream : self.codeStream,
+      textStream : self.textStream,
+      scrollDirective : self.scrollDirective,
+      code_editor_value : "",
+      text_editor_value : "",
+    },
+    params:{
+      putget : putget,
+      url : self.url,
+    },
+  })
+}
+
+ByteStream.prototype.openDumpStream = function (w){
+  try{
+    this.url = w.name
+    this.__byteStream__('GET')
+  } 
+  catch(e){
+    console.log(e)
+  }
+}
+
+ByteStream.prototype.saveDumpStream = function (){
+  try{
+    this.__byteStream__('PUT')
+  } 
+  catch(e){
+    console.log(e)
+  }
+}
+
+</script>
+</head>
+<br>
+<input id=btnStream type=file /><br>
+<br>
+<div>
+<input id=btnDump type=button value="Dump file" />  <input id=btnClear type=button value="clear source window"/> 
+<div id=loadstatus style="float : right"> Ready</div>
+</div>
+<br>
+<div>
+<textarea id=byteresult></textarea>
+<textarea id=textresult style="width : 24%;"></textarea>
+</div>
+<input id=btnSave type=button value="Save file" />
+<footer>
+
+<script>
+
+var __file__ = new ByteStream(byteresult, textresult, loadstatus)
+ 
+input:onclick = function(e){
+  var __status__ = {
+    "btnDump" : function(){
+        __file__.openDumpStream(btnStream.files[0])
+        },
+    "btnSave" : function(){
+        __file__.saveDumpStream()
+        },
+    "btnClear" : function(){
+        byteresult.value = ''
+        textresult.value = ''
+        },
+  }
+  if(__status__[e.target.id]){
+    __status__[e.target.id]()
+  }
+}
+
+byteresult.addEventListener("scroll", 
+  function(e){
+    //console.log(e.target.scrollTop,e.target.scrollTopMax)
+  })
+
+</script>
+
+</footer>
+</html>

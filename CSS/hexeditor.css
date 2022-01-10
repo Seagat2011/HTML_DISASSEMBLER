@@ -1,0 +1,56 @@
+
+body {
+  font-style : normal;
+  font-family : monospace;
+  font-size : 10pt;
+}
+
+code {
+  left: 10px;
+  width: 49%;
+  height: 90%;
+  overflow : auto;
+  color: #808080;
+  outline: none;
+  display: inline;
+  float: left;
+}
+
+source {
+  left: 700px;
+  width: 49%;
+  height: 90%;
+  overflow : auto;
+  color: #808080;
+  outline: none;
+  display: inline;
+  float: right;
+}
+
+editorAttributes {
+    top: 729px;
+    left: 10px;
+    position: absolute;
+}
+
+byte {
+  font-family : monospace;
+  font-size : 10pt;
+}
+
+src {
+  font-family : monospace;
+  font-size : 10pt;
+}
+
+byte:hover {
+    color: black;
+    font-weight: bolder;
+    text-decoration: underline;
+}
+
+src:hover {
+    color: black;
+    font-weight: bolder;
+    text-decoration: underline;
+}
