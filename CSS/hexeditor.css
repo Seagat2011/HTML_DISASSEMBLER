@@ -45,12 +45,15 @@ src {
 
 byte:hover {
     color: black;
-    font-weight: bolder;
-    text-decoration: underline;
+    font-weight: bold;
 }
 
 src:hover {
     color: black;
-    font-weight: bolder;
-    text-decoration: underline;
+    font-weight: bold;
+}
+
+::selection {
+    color: black;
+    background-color: yellow;
 }
