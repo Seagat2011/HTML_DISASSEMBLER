@@ -49,7 +49,7 @@
       0a 0a 66 75 6e 63 74 69 6f 6e 20 6d 79 46 75 6e 63 28 65 29 7b 0a 0a 7d
 
   OUTPUT
-    Hexadecimal + filtered text + Assembler
+    Hexadecimal + filtered text + Disassembly
 
   VERSION
     Major.Minor.Bugfix.Patch
@@ -83,6 +83,13 @@ function ByteStream(ce,te,stat){
       function(){
           self.code_editor.innerHTML = self.codeStream.asByteTAGStream().join(" ")
           self.text_editor.innerHTML = self.textStream.asSrcTAGStream().join("")
+          let _byte_ = document.getElementsByTagName('byte')
+          let _txt_ = document.getElementsByTagName('src')
+          for(let i in _byte_){
+              _byte_[i].addEventListener('select',function(e){
+                  e
+              },1)
+          }
           self.proceed = false
       }
     ]
