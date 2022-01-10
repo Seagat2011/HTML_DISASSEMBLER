@@ -33,12 +33,12 @@ Object.prototype._hexToUint8 = function(){
 
 Object.prototype.asTAGStream = function(u){
     var self = this
-    return self.map(function(v,i,me){ return v.asTAG(u) })
+    return self.map(function(v,i,me){ return v.asTAG(u,i) })
 }
 
 Object.prototype.asByteTAGStream = function(){
     var self = this
-    return self.map(function(v,i,me){ return v.asTAG('byte') })
+    return self.map(function(v,i,me){ return v.asTAG('byte',i) })
 }
 
 Object.prototype.asSrcTAGStream = function(){
@@ -53,10 +53,10 @@ Object.prototype.asSrcTAGStream = function(){
             if(v.match('\n')){
                 return '<br>'
             }
-        return v.asTAG('src'); 
+        return v.asTAG('src',i); 
         })
 }
 
-Object.prototype.asTAG = function(u){
-    return `<${u}>${this}</${u}>`
+Object.prototype.asTAG = function(u,i){
+    return `<${u} id=_${i}>${this}</${u}>`
 }
