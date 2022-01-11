@@ -51,7 +51,7 @@ Object.prototype.asSrcTAGStream = function(){
                 v = '&nbsp;&nbsp;&nbsp;&nbsp;'
             } else
             if(v.match('\n')){
-                return '<br>'
+                v = '<br>'
             }
         return v.asTAG('src',i); 
         })
