@@ -46,11 +46,13 @@ src {
 byte:hover {
     color: black;
     font-weight: bold;
+    text-decoration: underline
 }
 
 src:hover {
     color: black;
     font-weight: bold;
+    text-decoration: underline
 }
 
 ::selection {
