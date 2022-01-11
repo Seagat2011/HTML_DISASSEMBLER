@@ -57,5 +57,6 @@ src:hover {
 
 ::selection {
     color: black;
+    font-weight: bold;
     background-color: yellow;
 }
