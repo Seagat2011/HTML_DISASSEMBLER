@@ -61,45 +61,39 @@
 */
 
 function ByteStream(ce,te,stat){
-  var self = this
-  this.url = ""
-  this.urlSave = ""
-  this.byteStream = 0x00
-  this.codeStream = 0x00
-  this.textStream = ""
-  this.code_editor = ce
-  this.text_editor = te
-  this.status_window = stat
-  this.ce_scrollHeight = ce.scrollHeight
-  this.te_scrollHeight = te.scrollHeight
-  this.scrollDirective = 1840*2 // 40 lines x 46 columns = 1840 bytes visible //
-  this.byteScrollTop = 1840*2+1
-  this.textScrollTop = 1840*2+1
-  this.byteScroll_pixelTop = 0
-  this.textScroll_pixelTop = 0
-  this.proceed = false
-  this.callback = function(){
-    var a = [
-      function(){
-          self.code_editor.innerHTML = self.codeStream.asByteTAGStream().join(" ")
-          self.text_editor.innerHTML = self.textStream.asSrcTAGStream().join("")
-          let _byte_ = document.getElementsByTagName('byte')
-          let _txt_ = document.getElementsByTagName('src')
-          for(let i in _byte_){
-              _byte_[i].addEventListener('select',function(e){
-                  e
-              },1)
-          }
-          self.proceed = false
-      }
-    ]
-    if(self.proceed){
-      a.map(function(w){
-        return w()
-      })
+    var self = this
+    this.url = ""
+    this.urlSave = ""
+    this.byteStream = 0x00
+    this.codeStream = 0x00
+    this.textStream = ""
+    this.code_editor = ce
+    this.text_editor = te
+    this.status_window = stat
+    this.ce_scrollHeight = ce.scrollHeight
+    this.te_scrollHeight = te.scrollHeight
+    this.scrollDirective = 1840*2 // 40 lines x 46 columns = 1840 bytes visible //
+    this.byteScrollTop = 1840*2+1
+    this.textScrollTop = 1840*2+1
+    this.byteScroll_pixelTop = 0
+    this.textScroll_pixelTop = 0
+    this.proceed = false
+    this.callback = function(){
+        var a = [
+            function(){
+                self.code_editor.innerHTML = self.codeStream.asByteTAGStream().join(" ")
+                self.text_editor.innerHTML = self.textStream.asSrcTAGStream().join("")
+                self.proceed = false
+            }
+        ]
+        if(self.proceed){
+          a.map(function(w){
+            return w()
+          })
+        }
     }
-  }
-  setInterval(this.callback,1)
+    setInterval(this.callback,1)
+    //setInterval(this.selectionCALLBACK,1)
 }
 
 ByteStream.prototype = {}
