@@ -63,6 +63,7 @@
 function ByteStream(ce,te,stat){
     var self = this
     this.url = ""
+    this.intCALLBACK = 0
     this.urlSave = ""
     this.byteStream = 0x00
     this.codeStream = 0x00
@@ -77,23 +78,27 @@ function ByteStream(ce,te,stat){
     this.textScrollTop = 1840*2+1
     this.byteScroll_pixelTop = 0
     this.textScroll_pixelTop = 0
-    this.proceed = false
     this.callback = function(){
         var a = [
             function(){
                 self.code_editor.innerHTML = self.codeStream.asByteTAGStream().join(" ")
                 self.text_editor.innerHTML = self.textStream.asSrcTAGStream().join("")
-                self.proceed = false
+                self.proceed( false )
             }
         ]
-        if(self.proceed){
+        if(self.intCALLBACK){
           a.map(function(w){
             return w()
           })
         }
     }
-    setInterval(this.callback,1)
-    //setInterval(this.selectionCALLBACK,1)
+    this.proceed = function(u){
+        if(u){
+            self.intCALLBACK = setInterval(self.callback,1)
+        } else if(self.intCALLBACK){
+            clearInterval( self.intCALLBACK )
+        }
+    }
 }
 
 ByteStream.prototype = {}
@@ -158,7 +163,7 @@ ByteStream.prototype.__byteStream__ = function (putget, decodeflag){
             })
           self.byteScroll_pixelTop = 0
           self.textScroll_pixelTop = 0
-          self.proceed = true
+          self.proceed( true )
           return "Ready"  // 4 DONE //
           },
       ]
@@ -196,7 +201,7 @@ ByteStream.prototype.openDumpStream = function (w, f){
     else
     if(w && w.name){
       self.byteScroll_pixelTop = self.textScroll_pixelTop = 0
-      self.proceed = true
+      self.proceed( true )
     }
   } 
   catch(e){
