@@ -124,3 +124,58 @@ divX86IA64.onclick = function(e){
     __status__.btnClear()
     __status__.btnDump()
 }
+
+var intVAL
+var HOVER = 'yellow'
+var highlightQUEUE = []
+
+document.onselectionchange = function(e){
+    var rangetextOBJ
+    if(rangetextOBJ = getSelection()){
+        var __basenodeName__ = `${rangetextOBJ.baseNode.parentElement.localName}`
+        var __extentnodeName__ = `${rangetextOBJ.extentNode.parentElement.localName}`
+        var __basenodeId__ = `${rangetextOBJ.baseNode.parentElement.id}`
+        var __extentnodeId__ = `${rangetextOBJ.extentNode.parentElement.id}`
+        if( __basenodeName__ != __extentnodeName__ && highlightQUEUE.length)
+            flushHighlightQueue('force')
+        if( !highlightQUEUE.length ){
+            Function(`
+            ${__basenodeId__}[0].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
+            ${__basenodeId__}[1].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
+            `)();
+            highlightQUEUE.push( __basenodeId__ )
+            !intVAL && (intVAL = setInterval(flushHighlightQueue,1))
+            return
+        }
+        if( highlightQUEUE.length && highlightQUEUE[0] != __basenodeId__){
+            flushHighlightQueue('force');
+            Function(`
+            ${__basenodeId__}[0].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
+            ${__basenodeId__}[1].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
+            `)();
+            highlightQUEUE.push( __basenodeId__ )
+        }
+        Function(`
+        ${__extentnodeId__}[0].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
+        ${__extentnodeId__}[1].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
+        `)();
+        highlightQUEUE.push( __extentnodeId__ )
+        !intVAL && (intVAL = setInterval(flushHighlightQueue,1))
+        return
+    }
+}
+
+function flushHighlightQueue(resetQueue){
+    if(!getSelection() || resetQueue){
+        // empty queue //
+        highlightQUEUE.map(function(u,i,me){
+            Function(`
+            ${u}[0].attributes.id.ownerElement.style['backgroundColor'] = 'white'
+            ${u}[1].attributes.id.ownerElement.style['backgroundColor'] = 'white'
+            `)()
+            return u
+        })
+        highlightQUEUE = []
+        !resetQueue && clearInterval( intVAL )
+    }
+}
