@@ -13,7 +13,7 @@ var __status__ = {
         __file__.saveDumpStream(btnSaveStream.files[0])
         },
     "btnClear" : function(){
-        __file__.proceed = false
+        __file__.proceed( false )
         byteresult.innerText = ''
         textresult.innerText = ''
         },
@@ -127,7 +127,7 @@ divX86IA64.onclick = function(e){
 
 var intVAL
 var HOVER = 'yellow'
-var highlightQUEUE = []
+var highlightQUEUE = new Set()
 
 document.onselectionchange = function(e){
     var rangetextOBJ
@@ -136,30 +136,32 @@ document.onselectionchange = function(e){
         var __extentnodeName__ = `${rangetextOBJ.extentNode.parentElement.localName}`
         var __basenodeId__ = `${rangetextOBJ.baseNode.parentElement.id}`
         var __extentnodeId__ = `${rangetextOBJ.extentNode.parentElement.id}`
-        if( __basenodeName__ != __extentnodeName__ && highlightQUEUE.length)
+        if(__extentnodeId__.match('^[^_]'))
+            return;
+        if( __basenodeName__ != __extentnodeName__ && highlightQUEUE.size)
             flushHighlightQueue('force')
-        if( !highlightQUEUE.length ){
+        if( !highlightQUEUE.size ){
             Function(`
             ${__basenodeId__}[0].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
             ${__basenodeId__}[1].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
             `)();
-            highlightQUEUE.push( __basenodeId__ )
+            highlightQUEUE.add( __basenodeId__ )
             !intVAL && (intVAL = setInterval(flushHighlightQueue,1))
             return
         }
-        if( highlightQUEUE.length && highlightQUEUE[0] != __basenodeId__){
+        if( highlightQUEUE.size && !highlightQUEUE.has(__basenodeId__) ){
             flushHighlightQueue('force');
             Function(`
             ${__basenodeId__}[0].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
             ${__basenodeId__}[1].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
             `)();
-            highlightQUEUE.push( __basenodeId__ )
+            highlightQUEUE.add( __basenodeId__ )
         }
         Function(`
         ${__extentnodeId__}[0].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
         ${__extentnodeId__}[1].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
         `)();
-        highlightQUEUE.push( __extentnodeId__ )
+        highlightQUEUE.add( __extentnodeId__ )
         !intVAL && (intVAL = setInterval(flushHighlightQueue,1))
         return
     }
@@ -168,14 +170,13 @@ document.onselectionchange = function(e){
 function flushHighlightQueue(resetQueue){
     if(!getSelection() || resetQueue){
         // empty queue //
-        highlightQUEUE.map(function(u,i,me){
+        for(var i of highlightQUEUE){
             Function(`
-            ${u}[0].attributes.id.ownerElement.style['backgroundColor'] = 'white'
-            ${u}[1].attributes.id.ownerElement.style['backgroundColor'] = 'white'
+            ${i}[0].attributes.id.ownerElement.style['backgroundColor'] = 'white'
+            ${i}[1].attributes.id.ownerElement.style['backgroundColor'] = 'white'
             `)()
-            return u
-        })
-        highlightQUEUE = []
+        }
+        highlightQUEUE = new Set()
         !resetQueue && clearInterval( intVAL )
     }
 }
