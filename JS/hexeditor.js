@@ -130,41 +130,62 @@ var intVAL
 var HOVER = 'yellow'
 var highlightQUEUE = new Set()
 
-document.onselectionchange = function(e){
+document.onkeyup = document.onselectionchange = function(e){
     try {
         var rangetextOBJ
-        if(rangetextOBJ = getSelection()){
+        if (rangetextOBJ = getSelection()){
             var __basenodeName__ = `${rangetextOBJ.baseNode.parentElement.localName}`
             var __extentnodeName__ = `${rangetextOBJ.extentNode.parentElement.localName}`
-            var __basenodeId__ = `${rangetextOBJ.baseNode.parentElement.id}`
-            var __extentnodeId__ = `${rangetextOBJ.extentNode.parentElement.id}`
-            if(!__extentnodeId__ || __extentnodeId__.match('^[^_]'))
+            var __baseNodeId__ = `${rangetextOBJ.baseNode.parentElement.id}`
+            var __extentNodeId__ = `${rangetextOBJ.extentNode.parentElement.id}`
+            if (!__extentNodeId__ || __extentNodeId__.match('^[^_]'))
                 return;
-            if( __basenodeName__ != __extentnodeName__ && highlightQUEUE.size)
-                flushHighlightQueue('force')
-            if( !highlightQUEUE.size ){
+            if ( __basenodeName__ != __extentnodeName__ && highlightQUEUE.size)
+                flushHighlightQueue('force');
+            if ( !highlightQUEUE.size ){
                 Function(`
-                ${__basenodeId__}[0].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
-                ${__basenodeId__}[1].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
+                ${__baseNodeId__}[0].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
+                ${__baseNodeId__}[1].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
                 `)();
-                highlightQUEUE.add( __basenodeId__ )
+                highlightQUEUE.add( __baseNodeId__ )
                 !intVAL && (intVAL = setInterval(flushHighlightQueue,1))
                 return
             }
-            if( highlightQUEUE.size && !highlightQUEUE.has(__basenodeId__) ){
+            //if ( highlightQUEUE.size && !highlightQUEUE.has(__baseNodeId__) ) {
                 flushHighlightQueue('force');
                 Function(`
-                ${__basenodeId__}[0].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
-                ${__basenodeId__}[1].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
+                ${__baseNodeId__}[0].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
+                ${__baseNodeId__}[1].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
                 `)();
-                highlightQUEUE.add( __basenodeId__ )
-            }
-            Function(`
-            ${__extentnodeId__}[0].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
-            ${__extentnodeId__}[1].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
-            `)();
-            highlightQUEUE.add( __extentnodeId__ )
-            !intVAL && (intVAL = setInterval(flushHighlightQueue,1))
+                highlightQUEUE.add( __baseNodeId__ )
+                try {
+                    var i = __baseNodeId__.match(/\d+/)[0]*1
+                    var I = __extentNodeId__.match(/\d+/)[0]*1
+                    var flag = i < I ? '1' : '0' ;
+                    flag += i > I ? '1' : '0' ;
+                    flag += i == I ? '1' : '0' ;
+                    var _set = {
+                        '100': 1,
+                        '010':-1,
+                        '001': 0,
+                    }
+                    var iter = _set[ flag ] ;
+                    do{
+                        i += iter
+                        var _id_ = `_${i}`
+                        if( !highlightQUEUE.has( _id_ ) ){
+                            Function(`
+                            ${_id_}[0].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
+                            ${_id_}[1].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
+                            `)();
+                            highlightQUEUE.add( _id_ )
+                        }
+                    } while (i!=I);
+                } catch(err) {
+                    __emit__( err )
+                }
+                !intVAL && (intVAL = setInterval(flushHighlightQueue,1))
+            //}
             return
         }
     } catch (err) { __emit__( err ) }
