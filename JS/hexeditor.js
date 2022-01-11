@@ -1,4 +1,5 @@
 
+var __emit__ = console.log
 // Flags(5): MSB [ btnUTF8 btnUTF16 btnAMD64 btnX86IA32 btnX86IA64 ] LSB //
 var __flags__ = '10000'
 var __file__ = new ByteStream(byteresult, textresult, loadstatus)
@@ -130,41 +131,43 @@ var HOVER = 'yellow'
 var highlightQUEUE = new Set()
 
 document.onselectionchange = function(e){
-    var rangetextOBJ
-    if(rangetextOBJ = getSelection()){
-        var __basenodeName__ = `${rangetextOBJ.baseNode.parentElement.localName}`
-        var __extentnodeName__ = `${rangetextOBJ.extentNode.parentElement.localName}`
-        var __basenodeId__ = `${rangetextOBJ.baseNode.parentElement.id}`
-        var __extentnodeId__ = `${rangetextOBJ.extentNode.parentElement.id}`
-        if(!__extentnodeId__ || __extentnodeId__.match('^[^_]'))
-            return;
-        if( __basenodeName__ != __extentnodeName__ && highlightQUEUE.size)
-            flushHighlightQueue('force')
-        if( !highlightQUEUE.size ){
+    try {
+        var rangetextOBJ
+        if(rangetextOBJ = getSelection()){
+            var __basenodeName__ = `${rangetextOBJ.baseNode.parentElement.localName}`
+            var __extentnodeName__ = `${rangetextOBJ.extentNode.parentElement.localName}`
+            var __basenodeId__ = `${rangetextOBJ.baseNode.parentElement.id}`
+            var __extentnodeId__ = `${rangetextOBJ.extentNode.parentElement.id}`
+            if(!__extentnodeId__ || __extentnodeId__.match('^[^_]'))
+                return;
+            if( __basenodeName__ != __extentnodeName__ && highlightQUEUE.size)
+                flushHighlightQueue('force')
+            if( !highlightQUEUE.size ){
+                Function(`
+                ${__basenodeId__}[0].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
+                ${__basenodeId__}[1].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
+                `)();
+                highlightQUEUE.add( __basenodeId__ )
+                !intVAL && (intVAL = setInterval(flushHighlightQueue,1))
+                return
+            }
+            if( highlightQUEUE.size && !highlightQUEUE.has(__basenodeId__) ){
+                flushHighlightQueue('force');
+                Function(`
+                ${__basenodeId__}[0].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
+                ${__basenodeId__}[1].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
+                `)();
+                highlightQUEUE.add( __basenodeId__ )
+            }
             Function(`
-            ${__basenodeId__}[0].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
-            ${__basenodeId__}[1].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
+            ${__extentnodeId__}[0].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
+            ${__extentnodeId__}[1].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
             `)();
-            highlightQUEUE.add( __basenodeId__ )
+            highlightQUEUE.add( __extentnodeId__ )
             !intVAL && (intVAL = setInterval(flushHighlightQueue,1))
             return
         }
-        if( highlightQUEUE.size && !highlightQUEUE.has(__basenodeId__) ){
-            flushHighlightQueue('force');
-            Function(`
-            ${__basenodeId__}[0].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
-            ${__basenodeId__}[1].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
-            `)();
-            highlightQUEUE.add( __basenodeId__ )
-        }
-        Function(`
-        ${__extentnodeId__}[0].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
-        ${__extentnodeId__}[1].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
-        `)();
-        highlightQUEUE.add( __extentnodeId__ )
-        !intVAL && (intVAL = setInterval(flushHighlightQueue,1))
-        return
-    }
+    } catch (err) { __emit__( err ) }
 }
 
 function flushHighlightQueue(resetQueue){
