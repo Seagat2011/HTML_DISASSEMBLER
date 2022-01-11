@@ -1,4 +1,134 @@
 
+        
+        if( __basenodeName__ == __extentnodeName__){ // stay in scope! //
+            var __basenodeId__ = `${rangetextOBJ.basenode.parentElement.id}`
+            var __extentnodeId__ = `${rangetextOBJ.extentNode.parentElement.id}`
+            if( __basenodeId__ == __extentnodeId__ ){ // if basenodeId==extentnodeId, maybe FLUSH highlightQUEUE //
+                if ( highlightQUEUE.length ){
+                    if(highlightQUEUE[0] != __basenodeId__){
+                        flushHighlightQueue('force')
+                    } else { // OK! expand queue //
+                    
+                    }
+                } else { // OK! expand queue //
+                    
+                }
+            }
+            if( !intVAL ) // if !intVAL, init! //
+                intVAL = setInterval(flushHighlightQueue,1)
+        } else { // else FLUSH the queue //
+            flushHighlightQueue('force')
+        }
+
+//
+
+/*
+                try{ 
+                    let i = 0
+                    do{
+                        Function(` _${i}[0].addEventListener('resetHIGHLIGHTING',()=>("_${i}[0].style['background-color'] = _${i}[1].style['background-color'] = 'white'"),1)()
+                    } while(++i);
+                } catch(e) {
+                  // NOP //
+                }*/
+
+//
+
+    this.selectionCALLBACK = function(){
+        var rangetextOBJ
+        if(rangetextOBJ = getSelection()){
+            var dereference = { "byte":0, "src":1 }
+            var x = rangetextOBJ.anchorNode.parentElement.id.match('\d+')[0]*1 // _7 //
+            var y = rangetextOBJ.extentNode.parentElement.id.match('\d+')[0]*1 // _47 //
+            rangetextOBJ.anchorNode.parentElement.localName // byte //
+            rangetextOBJ.extentNode.parentElement.localName // byte //
+            
+            var iter = (x > y) ? 1 : -1 ;
+        } else {
+            const evt = new Event('resetHIGHLIGHTING', { "bubbles": true }); 
+            document.dispatchEvent(evt);
+        }
+    }
+
+//
+
+            var __basenode__ = `${rangetextOBJ.basenode.parentElement.localName}#${rangetextOBJ.basenode.parentElement.id}`
+            var __extentnode__ = `${rangetextOBJ.extentNode.parentElement.localName}#${rangetextOBJ.extentNode.parentElement.id}`
+
+//
+
+Function(`
+                    _${i}[0].addEventListener('select',()=>("_${i}[0].style['background-color'] = _${i}[1].style['background-color'] = 'yellow'"),1)
+                    _${i}[0].addEventListener('resetHIGHLIGHTING',()=>("_${i}[0].style['background-color'] = _${i}[1].style['background-color'] = 'white'"),1)
+                    _${i}[0].addEventListener('click',()=>("const evt = new Event('resetHIGHLIGHTING'); _${i}[0].dispatchEvent(evt); _${i}[1].dispatchEvent(evt)"),1)`)()
+
+//
+                    
+    this.callback = function(){
+    var a = [
+    function(){
+        self.code_editor.innerHTML = self.codeStream.asByteTAGStream().join(" ")
+        self.text_editor.innerHTML = self.textStream.asSrcTAGStream().join("")
+        try{ 
+            let i = 0
+            do{
+                Function(`_${i}[0].addEventListener('select',Function("_${i}[0].style.backgroundColor = _${i}[1].style.backgroundColor = 'yellow'"),1)`)()
+                Function(`_${i}[0].addEventListener('resetHIGHLIGHTING',Function("_${i}[0].style.backgroundColor = _${i}[1].style.backgroundColor = 'white'"),1)`)()
+                Function(`_${i}[0].addEventListener('click',Function("const evt = new Event('resetHIGHLIGHTING'); _${i}[0].dispatchEvent(evt); _${i}[1].dispatchEvent(evt)"),1)`)()
+            } while(++i);
+        } catch(e) {
+          
+        }
+        self.proceed = false
+    }
+    ]
+    if(self.proceed){
+      a.map(function(w){
+        return w()
+      })
+    }
+    }
+
+// reset highlight //
+_20[0].addEventListener('reset_hlt',Function("_20[0].style.backgroundColor = _20[1].style.backgroundColor = 'white'"),1)
+const evt = new Event("reset_hlt")
+_20[0].dispatchEvent(evt)
+
+// ONSELECT listener //
+_20[0].addEventListener('select',Function("_20[0].style.backgroundColor = _20[1].style.backgroundColor = 'yellow'"),1)
+
+// highlight in pairs //
+Function(`_${0}[0].style.backgroundColor=_${0}[1].style.backgroundColor='yellow'`)()
+
+//
+
+  this.callback = function(){
+    var a = [
+      function(){
+          self.code_editor.innerHTML = self.codeStream.asByteTAGStream().join(" ")
+          self.text_editor.innerHTML = self.textStream.asSrcTAGStream().join("")
+          let _byte_ = document.getElementsByTagName('byte')
+          let _txt_ = document.getElementsByTagName('src')
+          for(let _i_ in _byte_){
+              try{ _byte_[_i_].addEventListener('select',
+                  function(_){
+                      let u = document.getElementById(`_${_i_}`)
+                      u[0].style.backgroundColor = 
+                      u[1].style.backgroundColor = "yellow"
+                  },1)
+              } catch(e) {
+                  
+              }
+          }
+          self.proceed = false
+      }
+    ]
+    if(self.proceed){
+      a.map(function(w){
+        return w()
+      })
+    }
+    
   this.callback = function(){
     var a = [
       function(){/*
