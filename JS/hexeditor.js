@@ -136,7 +136,7 @@ document.onselectionchange = function(e){
         var __extentnodeName__ = `${rangetextOBJ.extentNode.parentElement.localName}`
         var __basenodeId__ = `${rangetextOBJ.baseNode.parentElement.id}`
         var __extentnodeId__ = `${rangetextOBJ.extentNode.parentElement.id}`
-        if(__extentnodeId__.match('^[^_]'))
+        if(!__extentnodeId__ || __extentnodeId__.match('^[^_]'))
             return;
         if( __basenodeName__ != __extentnodeName__ && highlightQUEUE.size)
             flushHighlightQueue('force')
