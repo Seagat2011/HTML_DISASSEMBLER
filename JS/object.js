@@ -44,14 +44,12 @@ Object.prototype.asByteTAGStream = function(){
 Object.prototype.asSrcTAGStream = function(){
     var self = this
     return self.map(function(v,i,me){ 
-            if(v.match(' ')){
+            if (v.match(/ /)) {
                 v = '&nbsp;'
-            } else
-            if(v.match('\t')){
+            } else if( v.match(/\t/) ) {
                 v = '&nbsp;&nbsp;&nbsp;&nbsp;'
-            } else
-            if(v.match('\n')){
-                v = '<br>'
+            } else if( v.match(/\n/) ) {
+                v = v.replace(/\n/,'<br>')
             }
         return v.asTAG('src',i); 
         })
