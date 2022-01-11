@@ -1,5 +1,48 @@
 
-        
+            /*
+            Function(`
+            ${__extentNodeId__}[0].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
+            ${__extentNodeId__}[1].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
+            `)();
+            highlightQUEUE.add( __extentNodeId__ )
+            !intVAL && (intVAL = setInterval(flushHighlightQueue,1))
+            */
+
+//
+
+            if( highlightQUEUE.size && !highlightQUEUE.has(__baseNodeId__) ){
+                flushHighlightQueue('force');
+                Function(`
+                ${__baseNodeId__}[0].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
+                ${__baseNodeId__}[1].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
+                `)();
+                highlightQUEUE.add( __baseNodeId__ )
+                try{
+                    var base = 'baseNode.parentElement'
+                    var baseId = 'baseNode'
+                    var nextBase = ''
+                    var nextSibling = '.nextSibling'
+                    var nextParent = '.parentElement'
+                    do{
+                        var nextId = base+nextBase+'.id'
+                        var nextLocalName = base+nextBase+'.localName'
+                        if(nextLocalName == 'br') // skip: br (no id!) breaks recursive loops //
+                            nextBase += nextParent
+                        Function(`
+                        ${nextId}[0].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
+                        ${nextId}[1].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
+                        `)();
+                        nextBase += nextSibling
+                    } while(1)
+                    highlightQUEUE.add( )
+                } catch(err) {
+                    // NOP //
+                }
+                !intVAL && (intVAL = setInterval(flushHighlightQueue,1))
+            }
+            
+//
+
         if( __basenodeName__ == __extentnodeName__){ // stay in scope! //
             var __basenodeId__ = `${rangetextOBJ.basenode.parentElement.id}`
             var __extentnodeId__ = `${rangetextOBJ.extentNode.parentElement.id}`
