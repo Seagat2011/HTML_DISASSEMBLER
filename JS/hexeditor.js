@@ -161,7 +161,9 @@ document.onkeyup = document.onselectionchange = function(e){
                 try {
                     var i = __baseNodeId__.match(/\d+/)[0]*1
                     var I = __extentNodeId__.match(/\d+/)[0]*1
-                    var flag = `${i < I ? '1' : '0'}${i > I ? '1' : '0'}${i == I ? '1' : '0'}`
+                    var flag = i < I ? '1' : '0' ;
+                    flag += i > I ? '1' : '0' ;
+                    flag += i == I ? '1' : '0' ;
                     var _set = {
                         '100': 1,
                         '010':-1,
