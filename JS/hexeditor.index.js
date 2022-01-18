@@ -76,8 +76,6 @@ function ByteStream(ce,te,stat){
     this.status_window = stat
     this.byteOffset = 
     this.textOffset = 2000 // 40 lines x 46 columns = 1840 visible bytes //
-    this.fromBYTELINE = 0
-    this.fromTEXTLINE = 0
     this.bkgWorkerLoadPage = function(idx,u){
         try {
             var stride = self.pages[idx]
@@ -155,6 +153,7 @@ ByteStream.prototype.__byteStream__ = function (putget, decodeflag){
           return status[v]() || status.default(v)    // 3 LOADING //
           },
         function(v){ 
+            self.pages = [] ;
             self.byteStream = new Uint8Array( xhr.response )
             self.codeStream = new Array()
             self.textStream = new Array()
