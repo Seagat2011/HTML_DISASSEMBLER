@@ -173,14 +173,14 @@ ByteStream.prototype.saveDumpStream = function (){
 <br>
 <div>
 <textarea id=byteresult></textarea>
-<textarea id=textresult style="width : 24%;"></textarea>
+<textarea id=sourceresult style="width : 24%;"></textarea>
 </div>
 <input id=btnSave type=button value="Save file" />
 <footer>
 
 <script>
 
-var __file__ = new ByteStream(byteresult, textresult, loadstatus)
+var __file__ = new ByteStream(byteresult, sourceresult, loadstatus)
  
 input:onclick = function(e){
   var __status__ = {
@@ -192,7 +192,7 @@ input:onclick = function(e){
         },
     "btnClear" : function(){
         byteresult.value = ''
-        textresult.value = ''
+        sourceresult.value = ''
         },
   }
   if(__status__[e.target.id]){
@@ -203,13 +203,13 @@ input:onclick = function(e){
 byteresult.addEventListener("scroll", 
   function(e){
     if(e.target.id == 'byteresult'){
-      textresult.scrollTop = e.target.scrollTop
+      sourceresult.scrollTop = e.target.scrollTop
     }
   })
 
-textresult.addEventListener("scroll", 
+sourceresult.addEventListener("scroll", 
   function(e){
-    if(e.target.id == 'textresult'){
+    if(e.target.id == 'sourceresult'){
       byteresult.scrollTop = e.target.scrollTop
     }
   })

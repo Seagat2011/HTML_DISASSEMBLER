@@ -60,3 +60,23 @@ src:hover {
     font-weight: bold;
     background-color: yellow;
 }
+
+pagepanel {
+    font-family: monospace;
+    color: gray;
+    width: 100%;
+    display: inline-flex;
+    overflow-x: scroll;
+    cursor: pointer;
+    padding-top: 5px;
+}
+
+page {
+    padding: 0 5 0 5;
+}
+
+page:hover {
+    text-decoration: underline;
+    color: black;
+    font-weight: bold;
+}

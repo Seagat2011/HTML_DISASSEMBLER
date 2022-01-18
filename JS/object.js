@@ -31,17 +31,17 @@ Object.prototype._hexToUint8 = function(){
     return __hexToUint8__[ this ]
 }
 
-Object.prototype.asTAGStream = function(u){
+Object.prototype.asStream = function(u){
     var self = this
     return self.map(function(v,i,me){ return v.asTAG(u,i) })
 }
 
-Object.prototype.asByteTAGStream = function(){
+Object.prototype.asByteStream = function(){
     var self = this
     return self.map(function(v,i,me){ return v.asTAG('byte',i) })
 }
 
-Object.prototype.asSrcTAGStream = function(){
+Object.prototype.asSrcStream = function(){
     var self = this
     return self.map(function(v,i,me){ 
             if (v.match(/ /)) {

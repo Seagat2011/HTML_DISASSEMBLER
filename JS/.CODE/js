@@ -1,4 +1,135 @@
 
+    this.bkgLoadFileWorker = function(u){
+        var a = [
+            function(){
+                var strideBYTE = self.fromBYTELINE+self.byteOffset ;
+                var strideTEXT = self.fromTEXTLINE+self.textOffset ;
+                self.code_editor.innerHTML = self.codeStream.slice(self.fromBYTELINE,strideBYTE).asByteStream().join(" ")
+                self.text_editor.innerHTML = self.textStream.slice(self.fromTEXTLINE,strideTEXT).asSrcStream().join("")
+                self.proceed( false )
+            }
+        ] ;
+        if(self.intEnableWorker){
+          a.map(function(w){
+            return w()
+          })
+        }
+    }
+//
+    this.proceed = function(u){
+        if(u){
+            self.intEnableWorker = setInterval(self.bkgLoadFileWorker,1)
+        } else if(self.intEnableWorker){
+            clearInterval( self.intEnableWorker )
+        }
+    }
+//
+        var a = [
+            function(){
+                var strideBYTE = fromBYTELINE+self.byteOffset ;
+                var strideTEXT = fromTEXTLINE+self.textOffset ;
+                self.code_editor.innerHTML = self.codeStream.slice(self.fromBYTELINE,strideBYTE).asByteStream().join(" ")
+                self.text_editor.innerHTML = self.textStream.slice(self.fromTEXTLINE,strideTEXT).asSrcStream().join("")
+                self.proceed( false )
+            }
+        ] ;
+//
+    xhr.onloadend = function(e){
+        var i = 0
+        try {
+            i = Math.max( e.total / self.byteOffset )
+            self.pages
+        } catch (err) {
+            console.log( err )
+        } finally {
+            
+        }
+    }
+//
+            self.byteScroll_pixelTop = 0
+            self.textScroll_pixelTop = 0
+//
+    this.scrollDirective = 
+//
+        __file__.bkgLoadFileWorker()
+        __file__.bkgLoadFileWorker()
+//
+<page id="_p_1">1</page>
+//
+test page-length tags 
+<page id="_p_1">1</page><page id="_p_2">2</page><page id="_p_3">3</page><page id="_p_4">4</page>
+<page id="_p_1">1</page><page id="_p_2">2</page><page id="_p_3">3</page><page id="_p_4">4</page>
+<page id="_p_1">1</page><page id="_p_2">2</page><page id="_p_3">3</page><page id="_p_4">4</page>
+<page id="_p_1">1</page><page id="_p_2">2</page><page id="_p_3">3</page><page id="_p_4">4</page>
+<page id="_p_1">1</page><page id="_p_2">2</page><page id="_p_3">3</page><page id="_p_4">4</page>
+<page id="_p_1">1</page><page id="_p_2">2</page><page id="_p_3">3</page><page id="_p_4">4</page>
+//
+        var a = [
+            function(){
+                var fromBYTELINE = self.code_editor.scrollTop*24
+                var fromTEXTLINE = self.text_editor.scrollTop*24
+                var bytePAD = [] ; bytePAD.length = self.codeStream.length - self.byteScrollTop
+                var textPAD = [] ; textPAD.length = self.textStream.length - self.textScrollTop
+                var preBytePAD = [] ; preBytePAD.length = fromBYTELINE
+                var preTextPAD = [] ; preTextPAD.length = fromTEXTLINE
+                var strideBYTE = fromBYTELINE+self.byteScrollTop ;
+                var strideTEXT = fromTEXTLINE+self.textScrollTop ;
+                self.code_editor.innerHTML = [ preBytePAD.fill("<br>").join(""), self.codeStream.slice(fromBYTELINE,strideBYTE).asByteTAGStream().join(" "), bytePAD.fill("<br>").join("") ].join("")
+                self.text_editor.innerHTML = [ preTextPAD.fill("<br>").join(""), self.textStream.slice(fromTEXTLINE,strideTEXT).asSrcTAGStream().join(""), textPAD.fill("<br>").join("") ].join("")
+                self.proceed( false )
+            }
+        ] ;
+//
+        var a = [
+            function(){
+                var bytePAD = [] ; bytePAD.length = self.codeStream.length - self.byteScrollTop
+                var textPAD = [] ; textPAD.length = self.textStream.length - self.textScrollTop
+                var preBytePAD = [] ; preBytePAD.length = self.code_editor.scrollTop*24
+                var preTextPAD = [] ; .length = self.text_editor.scrollTop*24
+                var stride = self.code_editor.scrollTop*24+self.byteScrollTop ;
+                self.code_editor.innerHTML = [ preBytePAD.fill("<br>").join(""), self.codeStream.slice(self.byteScroll_pixelTop*24,stride).asByteTAGStream().join(" "), bytePAD.fill("<br>").join("") ].join("")
+                var stride = self.text_editor.scrollTop*24+self.textScrollTop ;
+                self.text_editor.innerHTML = [ preTextPAD.fill("<br>").join(""), self.textStream.slice(self.textScroll_pixelTop*24,stride).asSrcTAGStream().join(""), textPAD.fill("<br>").join("") ].join("")
+                self.proceed( false )
+            }
+        ] ;
+//
+    this.scrollEventListener = function(e){
+        if ( e.target.id == 'sourceresult' ){
+            var fillFrom = [] ;
+            var fillTo = [] ;
+            var stride = 2000 ; // viewable chars //
+            var charsPerLinePerTenPixels = 24;
+            var srcFrom = Math.max(0,e.target.scrollTop * charsPerLinePerTenPixels );
+            var srcTo = Math.min(srcFrom+stride,self.textStream.length-1)
+            fillFrom.length = srcFrom-1
+            fillTo.length = self.textStream.length-1 - srcTo + 1
+            self.text_editor.innerHTML = [ fillFrom.fill('<br>').join(""),self.textStream.slice(srcFrom,srcTo).asSrcTAGStream().join(""),fillTo.fill("<br>").join("") ].join("") ;
+        } else if ( e.target.id == 'byteresult' ){
+            var fillFrom = [] ;
+            var fillTo = [] ;
+            var stride = 2000 ; // viewable chars //
+            var charsPerLinePerTenPixels = 24;
+            var srcFrom = Math.max(0,e.target.scrollTop * charsPerLinePerTenPixels );
+            var srcTo = Math.min(srcFrom+stride,self.codeStream.length-1)
+            fillFrom.length = Math.max(0,srcFrom-1)
+            fillTo.length = self.codeStream.length-1 - srcTo + 1
+            self.text_editor.innerHTML = [ fillFrom.fill('<br>').join(""),self.codeStream.slice(srcFrom,srcTo).asSrcTAGStream().join(""),fillTo.fill("<br>").join("") ].join("") ;
+        }
+    }
+    this.code_editor.addEventListener("scroll", self.scrollEventListener, 1)
+    this.text_editor.addEventListener("scroll", self.scrollEventListener, 1)
+//
+var a = []; a.length = 10; a.fill('a',0,)
+//
+      self.code_editor.scrollHeight = 
+      self.text_editor.scrollHeight = self.byteStream.length
+//
+    //this.ce_scrollHeight = ce.scrollHeight
+    //this.te_scrollHeight = te.scrollHeight
+
+//
+
             /*
             Function(`
             ${__extentNodeId__}[0].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'

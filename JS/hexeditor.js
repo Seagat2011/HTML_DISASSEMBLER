@@ -2,7 +2,7 @@
 var __emit__ = console.log
 // Flags(5): MSB [ btnUTF8 btnUTF16 btnAMD64 btnX86IA32 btnX86IA64 ] LSB //
 var __flags__ = '10000'
-var __file__ = new ByteStream(byteresult, textresult, loadstatus)
+var __file__ = new ByteStream(byteresult, sourceresult, loadstatus)
 var __fn__ = ''
 
 var __status__ = {
@@ -14,9 +14,8 @@ var __status__ = {
         __file__.saveDumpStream(btnSaveStream.files[0])
         },
     "btnClear" : function(){
-        __file__.proceed( false )
         byteresult.innerText = ''
-        textresult.innerText = ''
+        sourceresult.innerText = ''
         },
 }
 
@@ -33,17 +32,17 @@ byteresult.addEventListener("scroll",
   function(e){
     if(e.target.id == 'byteresult' && !scrollLock){
         let scrollRatio = e.target.scrollTop / byteresult.scrollHeight ;
-        textresult.scrollTop = textresult.scrollHeight * scrollRatio
+        sourceresult.scrollTop = sourceresult.scrollHeight * scrollRatio
         scrollLock = true
     } else {
         scrollLock = false
     }
   })
 
-textresult.addEventListener("scroll", 
+sourceresult.addEventListener("scroll", 
   function(e){
-    if(e.target.id == 'textresult' && !scrollLock){
-        let scrollRatio = e.target.scrollTop / textresult.scrollHeight ;
+    if(e.target.id == 'sourceresult' && !scrollLock){
+        let scrollRatio = e.target.scrollTop / sourceresult.scrollHeight ;
         byteresult.scrollTop = byteresult.scrollHeight * scrollRatio
         scrollLock = true
     } else {
@@ -59,7 +58,7 @@ btnStream.addEventListener('change',() => {
     __file__.openDumpStream( btnStream.files[0], __flags__ ) 
 }, false)
 
-textresult.ondrop = 
+sourceresult.ondrop = 
 byteresult.ondrop = function(e){
     __file__.openDumpStream( e.dataTransfer.files[0], __flags__ )
     e.preventDefault()
@@ -69,24 +68,24 @@ divCode00.onclick = function(e){
     code00.checked=true
     code01.checked=code02.checked=false
     byteresult.style.display=
-    textresult.style.display='inline'
+    sourceresult.style.display='inline'
     byteresult.style.width = 
-    textresult.style.width = '49%'
+    sourceresult.style.width = '49%'
 }
 
 divCode01.onclick = function(e){
     code01.checked=true
     code00.checked=code02.checked=false
     byteresult.style.display='none'
-    textresult.style.display='inline'
-    textresult.style.width = '100%'
+    sourceresult.style.display='inline'
+    sourceresult.style.width = '100%'
 }
 
 divCode02.onclick = function(e){
     code02.checked=true
     code00.checked=code01.checked=false
     byteresult.style.display='inline'
-    textresult.style.display='none'
+    sourceresult.style.display='none'
     byteresult.style.width = '100%'
 }
 

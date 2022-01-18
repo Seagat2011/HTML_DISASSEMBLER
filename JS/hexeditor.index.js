@@ -31,7 +31,7 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   TITLE
-    HEX LIVE TEXT EDITOR + DISASSEMLBER
+    HTML5 HEX EDITOR + DISASSEMLBER
 
   AUTHOR
     Seagat2011
@@ -63,7 +63,8 @@
 function ByteStream(ce,te,stat){
     var self = this
     this.url = ""
-    this.intCALLBACK = 0
+    this.pages = []
+    this.intEnableWorker = 0
     this.urlSave = ""
     this.byteStream = 0x00
     this.codeStream = 0x00
@@ -71,32 +72,24 @@ function ByteStream(ce,te,stat){
     this.code_editor = ce
     this.text_editor = te
     this.status_window = stat
-    this.ce_scrollHeight = ce.scrollHeight
-    this.te_scrollHeight = te.scrollHeight
-    this.scrollDirective = 1840*2 // 40 lines x 46 columns = 1840 bytes visible //
-    this.byteScrollTop = 1840*2+1
-    this.textScrollTop = 1840*2+1
-    this.byteScroll_pixelTop = 0
-    this.textScroll_pixelTop = 0
-    this.callback = function(){
-        var a = [
-            function(){
-                self.code_editor.innerHTML = self.codeStream.asByteTAGStream().join(" ")
-                self.text_editor.innerHTML = self.textStream.asSrcTAGStream().join("")
-                self.proceed( false )
-            }
-        ]
-        if(self.intCALLBACK){
-          a.map(function(w){
-            return w()
-          })
+    this.byteOffset = 
+    this.textOffset = 2000 // 40 lines x 46 columns = 1840 visible bytes //
+    this.fromBYTELINE = 0
+    this.fromTEXTLINE = 0
+    this.bkgWorkerLoadPage = function(idx){
+        try {
+            var stride = self.pages[idx]
+            self.code_editor.innerHTML = self.codeStream.slice(stride._from,stride._to).asByteStream().join(" ")
+            self.text_editor.innerHTML = self.textStream.slice(stride._from,stride._to).asSrcStream().join("")
+        } catch ( e ) {
+            console.log( e )
         }
     }
     this.proceed = function(u){
         if(u){
-            self.intCALLBACK = setInterval(self.callback,1)
-        } else if(self.intCALLBACK){
-            clearInterval( self.intCALLBACK )
+            self.intEnableWorker = setInterval(self.bkgWorkerLoadPage,1)
+        } else if(self.intEnableWorker){
+            clearInterval( self.intEnableWorker )
         }
     }
 }
@@ -112,6 +105,12 @@ ByteStream.prototype.__byteStream__ = function (putget, decodeflag){
     xhr.overrideMimeType("application/octet-stream");
     xhr.open(putget,url,async)
     xhr.responseType = "arraybuffer"
+    xhr.onprogress = function(e){
+        // e //
+    }
+    xhr.onloadend = function(e){
+        // e //
+    }
     xhr.onreadystatechange = function(e){
       var banner = [
         function(){
@@ -133,8 +132,8 @@ ByteStream.prototype.__byteStream__ = function (putget, decodeflag){
               },
             default:function(w){
               var msg = {
-                PUT:"LOAD",
-                GET:"SAVE",
+                PUT:"SAVE",
+                GET:"LOAD",
                 }
               return Error("Unable to complete "+msg[v]+" operation.")
               },
@@ -142,29 +141,33 @@ ByteStream.prototype.__byteStream__ = function (putget, decodeflag){
           return status[v]() || status.default(v)    // 3 LOADING //
           },
         function(v){ 
-          self.byteStream = new Uint8Array( xhr.response )
-          self.codeStream = new Array()
-          self.textStream = new Array()
-          var __decodeBYTE__ = {
-            // Flags(5): MSB [ btnUTF8 btnUTF16 btnAMD64 btnX86IA32 btnX86IA64 ] LSB //
-            '10000':function(v,w){ return charSet8[v] || `[0x${ v }]` }, // charSet8 //
-            '01000':function(v,w){ return charSet16[v] || `[0x${ v }]` }, // charSet16 //
-            '00100':function(v,w){ return (x86AMD64[v] + '\n' || charSet8[v] || `[0x${ v }]`) }, // x86AMD64 //
-            '00010':function(v,w){ return (x86IA32[v] + '\n' || charSet8[v] || `[0x${ v }]`) }, // x86IA32 //
-            '00001':function(v,w){ return (x86IA64[v] + '\n' || charSet8[v] || `[0x${ v }]`) }, // x86IA64 //
-          }
-          var decodeBYTE = __decodeBYTE__[decodeflag];
-          self.byteStream.map(
+            self.byteStream = new Uint8Array( xhr.response )
+            self.codeStream = new Array()
+            self.textStream = new Array()
+            var __decodeBYTE__ = {
+                // Flags(5): MSB [ btnUTF8 btnUTF16 btnAMD64 btnX86IA32 btnX86IA64 ] LSB //
+                '10000':function(v,w){ return charSet8[v] || `[0x${ v }]` }, // charSet8 //
+                '01000':function(v,w){ return charSet16[v] || `[0x${ v }]` }, // charSet16 //
+                '00100':function(v,w){ return (x86AMD64[v] + '\n' || charSet8[v] || `[0x${ v }]`) }, // x86AMD64 //
+                '00010':function(v,w){ return (x86IA32[v] + '\n' || charSet8[v] || `[0x${ v }]`) }, // x86IA32 //
+                '00001':function(v,w){ return (x86IA64[v] + '\n' || charSet8[v] || `[0x${ v }]`) }, // x86IA64 //
+            }
+            var decodeBYTE = __decodeBYTE__[decodeflag];
+            var I = 0 ;
+            var _html = [] ;
+            self.byteStream.map(
             function(w,i){
               var v = w.toHex() // Sanitize //
               self.codeStream[i] = v
-              self.textStream[i] = decodeBYTE(v,w) 
+              self.textStream[i] = decodeBYTE(v,w)
+              if(i%self.byteOffset == 0){
+                  _html.push( self.pages.push({ _from:i, _to:i+self.byteOffset }).asTAG('page',`p_${I} onclick="__file__.bkgWorkerLoadPage(${I++})"`) )
+              }
               return w
-            })
-          self.byteScroll_pixelTop = 0
-          self.textScroll_pixelTop = 0
-          self.proceed( true )
-          return "Ready"  // 4 DONE //
+            }) ;
+            ppanel.innerHTML = _html.join('')
+            self.bkgWorkerLoadPage( 0 ) // page 1 //
+            return "Ready"  // 4 DONE //
           },
       ]
       self.status_window.innerHTML = banner [ xhr.readyState ] (putget) || Error("Error parsing bitstream - Please try again.")
@@ -201,7 +204,7 @@ ByteStream.prototype.openDumpStream = function (w, f){
     else
     if(w && w.name){
       self.byteScroll_pixelTop = self.textScroll_pixelTop = 0
-      self.proceed( true )
+      self.bkgWorkerLoadPage( 0 )
     }
   } 
   catch(e){

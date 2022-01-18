@@ -1,6 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" hasBrowserHandlers="true">
 <head>
-<title>Hex Live Editor + Disassembler v1.0.0.0</title>
+<title>HTML5 Hex Editor + Disassembler v1.0.0.0</title>
 <meta charset="utf-8">
 
 <link href=CSS/hexeditor.css rel="stylesheet">
@@ -41,16 +41,25 @@
 <br>
 <div id=frm00>
 <code id=byteresult spellcheck=false contenteditable></code>
-<source id=textresult spellcheck=false contenteditable></source>
+<source id=sourceresult spellcheck=false contenteditable></source>
 </div>
 <br>
+<br>
+<pagepanel style="
+    overflow-x: clip ;
+">Page<page id="_p_ff">&lt;&lt;</page><page id="_p_fn">&lt;</page>
+<pagepanel id=ppanel style="
+    padding-top: 0;
+"></pagepanel>
+<page id="_p_ln">&gt;</page><page id="_p_ll">&gt;&gt;</page>Page</pagepanel>
 <editorAttributes>
+<input id=btnSave type=button value=" Save " />
+<br>
+<br>
 <input id=btnSaveStream type=file />
 <div id=divCode00 style="display: inline;"><input id=code00 type="radio" checked=TRUE /> <label style="cursor: hand;"> > byte code + assembly</label> </div> 
 <div id=divCode01 style="display: inline;"><input id=code01 type="radio" /> <label style="cursor: hand;"> > assembly</label> </div> 
 <div id=divCode02 style="display: inline;"><input id=code02 type="radio" /> <label style="cursor: hand;"> > byte code</label> </div>
-<br>
-<input id=btnSave type=button value=" Save " />
 </editorAttributes>
 <footer></footer>
 </html>
