@@ -62,6 +62,8 @@
 
 function ByteStream(ce,te,stat){
     var self = this
+    var CSSHIGHLIGHT = 'yellow'
+    var CSSDEFAULT = 'white'
     this.url = ""
     this.pages = []
     this.intEnableWorker = 0
@@ -76,11 +78,23 @@ function ByteStream(ce,te,stat){
     this.textOffset = 2000 // 40 lines x 46 columns = 1840 visible bytes //
     this.fromBYTELINE = 0
     this.fromTEXTLINE = 0
-    this.bkgWorkerLoadPage = function(idx){
+    this.bkgWorkerLoadPage = function(idx,u){
         try {
             var stride = self.pages[idx]
-            self.code_editor.innerHTML = self.codeStream.slice(stride._from,stride._to).asByteStream().join(" ")
-            self.text_editor.innerHTML = self.textStream.slice(stride._from,stride._to).asSrcStream().join("")
+            self.code_editor.innerHTML = self.codeStream.slice(stride._from,stride._to).asByteStream().join(" ") ;
+            self.text_editor.innerHTML = self.textStream.slice(stride._from,stride._to).asSrcStream().join("") ;
+            if (u && self.pages.last){
+                if(u != self.pages.last){
+                    self.pages.last.style.background = CSSDEFAULT;
+                    u.style.background = CSSHIGHLIGHT;
+                    self.pages.last = u;
+                } else {
+                    // NOP //
+                }
+            } else {
+                _p_0.style.background = CSSHIGHLIGHT;
+                self.pages.last = _p_0;
+            }
         } catch ( e ) {
             console.log( e )
         }
@@ -161,7 +175,7 @@ ByteStream.prototype.__byteStream__ = function (putget, decodeflag){
               self.codeStream[i] = v
               self.textStream[i] = decodeBYTE(v,w)
               if(i%self.byteOffset == 0){
-                  _html.push( self.pages.push({ _from:i, _to:i+self.byteOffset }).asTAG('page',`p_${I} onclick="__file__.bkgWorkerLoadPage(${I++})"`) )
+                  _html.push( self.pages.push({ _from:i, _to:i+self.byteOffset }).asTAG('page',`p_${I} onclick="__file__.bkgWorkerLoadPage(${I++}, this)"`) )
               }
               return w
             }) ;
