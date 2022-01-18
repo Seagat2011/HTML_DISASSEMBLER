@@ -1,4 +1,7 @@
 
+    this.fromBYTELINE = 0
+    this.fromTEXTLINE = 0
+//
     this.bkgLoadFileWorker = function(u){
         var a = [
             function(){
