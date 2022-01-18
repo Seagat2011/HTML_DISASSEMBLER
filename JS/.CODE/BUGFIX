@@ -87,3 +87,9 @@ SOLU:
         __emit__( err )
     }
     !intVAL && (intVAL = setInterval(flushHighlightQueue,1))
+
+SYMP: hexeditor.js: Bytestream not defined
+SOLU: 
+
+    pages.last && pages.last.style.background = 'white'; =>
+    pages.last && (pages.last.style.background = 'white')
