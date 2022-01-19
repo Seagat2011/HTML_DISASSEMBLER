@@ -55,6 +55,22 @@ Object.prototype.asSrcStream = function(){
         })
 }
 
+Object.prototype.asByteTag = function(i){
+    return this.asTAG('byte',i)
+}
+
+Object.prototype.asSrcTag = function(i){
+    var v = this;
+    if (v.match(/ /)) {
+        v = '&nbsp;'
+    } else if( v.match(/\t/) ) {
+        v = '&nbsp;&nbsp;&nbsp;&nbsp;'
+    } else if( v.match(/\n/) ) {
+        v = v.replace(/\n/,'<br>')
+    }
+    return v.asTAG('src',i)
+}
+
 Object.prototype.asTAG = function(u,i){
     return `<${u} id=_${i}>${this}</${u}>`
 }

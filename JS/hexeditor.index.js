@@ -60,8 +60,18 @@
 
 */
 
+var __decodeBYTE__ = {
+    // Flags(5): MSB [ btnUTF8 btnUTF16 btnAMD64 btnX86IA32 btnX86IA64 ] LSB //
+    '10000':function(v,w){ return charSet8[v] || `[0x${ v }]` }, // charSet8 //
+    '01000':function(v,w){ return charSet16[v] || `[0x${ v }]` }, // charSet16 //
+    '00100':function(v,w){ return (x86AMD64[v] + '\n' || charSet8[v] || `[0x${ v }]`) }, // x86AMD64 //
+    '00010':function(v,w){ return (x86IA32[v] + '\n' || charSet8[v] || `[0x${ v }]`) }, // x86IA32 //
+    '00001':function(v,w){ return (x86IA64[v] + '\n' || charSet8[v] || `[0x${ v }]`) }, // x86IA64 //
+}
+
 function ByteStream(ce,te,stat){
     var self = this
+    var decodeflag = ''
     var CSSHIGHLIGHT = 'yellow'
     var CSSDEFAULT = 'white'
     this.url = ""
@@ -69,8 +79,6 @@ function ByteStream(ce,te,stat){
     this.intEnableWorker = 0
     this.urlSave = ""
     this.byteStream = 0x00
-    this.codeStream = 0x00
-    this.textStream = ""
     this.code_editor = ce
     this.text_editor = te
     this.status_window = stat
@@ -78,9 +86,28 @@ function ByteStream(ce,te,stat){
     this.textOffset = 2000 // 40 lines x 46 columns = 1840 visible bytes //
     this.bkgWorkerLoadPage = function(idx,u){
         try {
+            var decodeBYTE = __decodeBYTE__[self.decodeflag];
             var stride = self.pages[idx]
-            self.code_editor.innerHTML = self.codeStream.slice(stride._from,stride._to).asByteStream().join(" ") ;
-            self.text_editor.innerHTML = self.textStream.slice(stride._from,stride._to).asSrcStream().join("") ;
+            var _code = [] ;
+            var _text = [] ;
+            self
+                .byteStream
+                .slice(stride._from,stride._to)
+                .map(
+                    function(w,i,me){
+                      _code.push( w.toHex().asByteTag(i) )
+                      return w
+                    }) ;
+            self
+                .byteStream
+                .slice(stride._from,stride._to)
+                .map(
+                    function(w,i,me){
+                      _text.push( decodeBYTE(w.toHex(),w).asSrcTag(i) )
+                      return w
+                    }) ;
+            self.code_editor.innerHTML = _code.join(" ")
+            self.text_editor.innerHTML = _text.join("")
             if (u && self.pages.last){
                 if(u != self.pages.last){
                     self.pages.last.style.background = CSSDEFAULT;
@@ -114,6 +141,7 @@ ByteStream.prototype.__byteStream__ = function (putget, decodeflag){
   var url = this.url
   var async = true
   if(putget === "GET"){
+    self.decodeflag = decodeflag
     xhr.overrideMimeType("application/octet-stream");
     xhr.open(putget,url,async)
     xhr.responseType = "arraybuffer"
@@ -152,32 +180,17 @@ ByteStream.prototype.__byteStream__ = function (putget, decodeflag){
           }
           return status[v]() || status.default(v)    // 3 LOADING //
           },
-        function(v){ 
-            self.pages = [] ;
-            self.byteStream = new Uint8Array( xhr.response )
-            self.codeStream = new Array()
-            self.textStream = new Array()
-            var __decodeBYTE__ = {
-                // Flags(5): MSB [ btnUTF8 btnUTF16 btnAMD64 btnX86IA32 btnX86IA64 ] LSB //
-                '10000':function(v,w){ return charSet8[v] || `[0x${ v }]` }, // charSet8 //
-                '01000':function(v,w){ return charSet16[v] || `[0x${ v }]` }, // charSet16 //
-                '00100':function(v,w){ return (x86AMD64[v] + '\n' || charSet8[v] || `[0x${ v }]`) }, // x86AMD64 //
-                '00010':function(v,w){ return (x86IA32[v] + '\n' || charSet8[v] || `[0x${ v }]`) }, // x86IA32 //
-                '00001':function(v,w){ return (x86IA64[v] + '\n' || charSet8[v] || `[0x${ v }]`) }, // x86IA64 //
-            }
-            var decodeBYTE = __decodeBYTE__[decodeflag];
-            var I = 0 ;
+        function(v){
+            var I = xhr.response.byteLength ;
+            var J = 0 ;
             var _html = [] ;
-            self.byteStream.map(
-            function(w,i){
-              var v = w.toHex() // Sanitize //
-              self.codeStream[i] = v
-              self.textStream[i] = decodeBYTE(v,w)
-              if(i%self.byteOffset == 0){
-                  _html.push( self.pages.push({ _from:i, _to:i+self.byteOffset }).asTAG('page',`p_${I} onclick="__file__.bkgWorkerLoadPage(${I++}, this)"`) )
-              }
-              return w
-            }) ;
+            self.pages = [] ;
+            self.byteStream = new Uint8Array( xhr.response ) ;
+            for(var i=0; i<I; i++){
+                if(i%self.byteOffset == 0){
+                  _html.push( self.pages.push({ _from:i, _to:i+self.byteOffset }).asTAG('page',`p_${J} onclick="__file__.bkgWorkerLoadPage(${J++}, this)"`) )
+                }
+            }
             ppanel.innerHTML = _html.join('')
             self.bkgWorkerLoadPage( 0 ) // page 1 //
             return "Ready"  // 4 DONE //
