@@ -7,7 +7,6 @@ SOLU: eg x86AMD64[w] => x86AMD64[v]
 SYMP: textresult.innerHTML.asSrcTAGStream outputs incorrect formatting
 PATCH: Disable textresult filestream callback
 PATCH: 
-
     asSrcTAGStream = function(){
         if( v.match(/\s/)){
             v = '&nbsp;'
@@ -23,7 +22,6 @@ PATCH:
     }
 
 SOLU:
-
     asSrcTAGStream = function(){
         var self = this
         return self.map(function(v,i,me){ 
@@ -41,20 +39,17 @@ SOLU:
     }
 
 SYMP: (utf-8 eg '\n' works)(x86IA64 eg 'mov\n' broken)
-
     if(v.match('\n')){
         return '<br>'
     }
     
 SOLU:
-
     if( v.match(/\n/) ) {
         v = v.replace(/\n/,'<br>')
     }
 
-SYMP: src/byte pair not highlighted or only highlights distal characters
+SYMP: src/byte pair unhighlighted or only highlighting distal characters
 SOLU: 
-
     Function(`
     ${__baseNodeId__}[0].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
     ${__baseNodeId__}[1].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
@@ -88,8 +83,46 @@ SOLU:
     }
     !intVAL && (intVAL = setInterval(flushHighlightQueue,1))
 
-SYMP: hexeditor.js: Bytestream not defined
-SOLU: 
-
-    pages.last && pages.last.style.background = 'white'; =>
+SYMP: hexeditor.js: Bytestream not defined 
+    pages.last && pages.last.style.background = 'white' 
+SOLU:
     pages.last && (pages.last.style.background = 'white')
+
+SYMP: (Empty editor/returns NULL)
+    self.code_editor.innerHTML = self
+        .byteStream
+        .slice(stride._from,stride._to)
+        .map(
+            function(w,i,me){
+              var v = w.toHex().asByteTag(i)
+              return v
+            })
+        .join(" ") ;
+    self.text_editor.innerHTML = self
+        .byteStream
+        .slice(stride._from,stride._to)
+        .map(
+            function(w,i,me){
+              return '20'//decodeBYTE(w.toHex(),w).asSrcTag(i)
+            })
+        .join("") ;
+
+SOLU: (push to in-place arrays)
+    self
+        .byteStream
+        .slice(stride._from,stride._to)
+        .map(
+            function(w,i,me){
+              _code.push( w.toHex().asByteTag(i) )
+              return w
+            }) ;
+    self
+        .byteStream
+        .slice(stride._from,stride._to)
+        .map(
+            function(w,i,me){
+              _text.push( decodeBYTE(w.toHex(),w).asSrcTag(i) )
+              return w
+            }) ;
+    self.code_editor.innerHTML = _code.join(" ")
+    self.text_editor.innerHTML = _text.join("")
