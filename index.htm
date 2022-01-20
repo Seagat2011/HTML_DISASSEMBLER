@@ -26,12 +26,12 @@
 <input id=btnDump type=button value="Dump file" />  <input id=btnClear type=button value="clear source window"/> 
 </div>
 <div style="float:left">
-<div id=divUTF8 style="display: inline;"><input id=btnUTF8 type=radio checked=TRUE/><label style="cursor: hand;"> > UTF-8 decode </label></div>
-<div id=divUTF16 style="display: inline;"><input id=btnUTF16 type=radio /><label style="cursor: hand;"> > UTF-16 decode </label></div>
+<div id=divUTF8 style="display: inline; cursor: pointer;"><input id=btnUTF8 type=radio checked=TRUE/><label style="cursor: hand;"> > UTF-8 decode </label></div>
+<div id=divUTF16 style="display: inline; cursor: pointer;"><input id=btnUTF16 type=radio /><label style="cursor: hand;"> > UTF-16 decode </label></div>
 <br>
-<div id=divAMD64 style="display: inline;"><input id=btnAMD64 type=radio /><label style="cursor: hand;"> > AMD64 decode </label></div>
-<div id=divX86IA32 style="display: inline;"><input id=btnX86IA32 type=radio /><label style="cursor: hand;"> > Intel x86 32-bit decode </label></div>
-<div id=divX86IA64 style="display: inline;"><input id=btnX86IA64 type=radio /><label style="cursor: hand;"> > Intel x86 64-bit decode </label></div>
+<div id=divAMD64 style="display: inline; cursor: pointer;"><input id=btnAMD64 type=radio /><label style="cursor: hand;"> > AMD64 decode </label></div>
+<div id=divX86IA32 style="display: inline; cursor: pointer;"><input id=btnX86IA32 type=radio /><label style="cursor: hand;"> > Intel x86 32-bit decode </label></div>
+<div id=divX86IA64 style="display: inline; cursor: pointer;"><input id=btnX86IA64 type=radio /><label style="cursor: hand;"> > Intel x86 64-bit decode </label></div>
 </div>
 <div id=loadstatus style="float:right">Ready</div>
 </td>
@@ -50,6 +50,7 @@
 ">Page<page id="_p_ff">&lt;&lt;</page><page id="_p_fn">&lt;</page>
 <pagepanel id=ppanel style="
     padding-top: 0;
+    cursor: pointer;
 "></pagepanel>
 <page id="_p_ln">&gt;</page><page id="_p_ll">&gt;&gt;</page>Page</pagepanel>
 <editorAttributes>
