@@ -193,7 +193,7 @@ document.onkeyup = document.onselectionchange = function(e){
 function flushHighlightQueue(resetQueue){
     if(!getSelection() || resetQueue){
         // empty queue //
-        for(var i of highlightQUEUE){
+        for(let i of highlightQUEUE){
             Function(`
             ${i}[0].attributes.id.ownerElement.style['backgroundColor'] = 'white'
             ${i}[1].attributes.id.ownerElement.style['backgroundColor'] = 'white'

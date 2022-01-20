@@ -186,7 +186,7 @@ ByteStream.prototype.__byteStream__ = function (putget, decodeflag){
             var _html = [] ;
             self.pages = [] ;
             self.byteStream = new Uint8Array( xhr.response ) ;
-            for(var i=0; i<I; i++){
+            for(let i=0; i<I; i++){
                 if(i%self.byteOffset == 0){
                   _html.push( self.pages.push({ _from:i, _to:i+self.byteOffset }).asTAG('page',`p_${J} onclick="__file__.bkgWorkerLoadPage(${J++}, this)"`) )
                 }
