@@ -82,8 +82,14 @@ function ByteStream(ce,te,stat){
     this.code_editor = ce
     this.text_editor = te
     this.status_window = stat
+    this.pageResizeFactor = (
+    window.innerWidth /* 1366 */ * 
+    window.innerHeight /* 768 */ ) /
+    1049088 /* 1366* 768 */ ;
+    this.defaultOffset = Math.ceil( 2000 /* 40 lines x 46 columns = 1840 visible bytes */ * this.pageResizeFactor ) ;
     this.byteOffset = 
-    this.textOffset = 2000 // 40 lines x 46 columns = 1840 visible bytes //
+    this.textOffset = 
+    this.defaultOffset ;
     this.bkgWorkerLoadPage = function(idx,u){
         try {
             var decodeBYTE = __decodeBYTE__[self.decodeflag];
