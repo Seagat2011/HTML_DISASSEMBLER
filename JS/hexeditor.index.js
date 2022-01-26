@@ -152,7 +152,7 @@ function ByteStream(ce,te,stat,srch){
                 function(w,i,me){
                     self.incrPAGE(i) && ++nPage ;
                     if(j==J){
-                       _html_.push( nPage.asTAG('page',`p_${nPage} onclick="__file__.bkgWorkerLoadPage(${nPage}, this)"`) ) ;
+                       _html_.push( nPage.asTAG('page',`p_${nPage-1} onclick="__file__.bkgWorkerLoadPage(${nPage-1}, this)"`) ) ;
                         lastKeyCodeMatch = [] ;
                         j = 0 ;
                     } else if (w == u[j]) {
