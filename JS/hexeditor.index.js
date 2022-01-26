@@ -144,7 +144,7 @@ function ByteStream(ce,te,stat,srch){
             try {
                 let nPage = 0 ;
                 let _html_ = [] ;
-                let u = self.onsearch.value.split("").map((w)=>{ return w.codePointAt() }) ;
+                let u = self.onsearch.value.split( ( chkByteSearch.checked ? /\s+/ : "" ) ).map((w)=>{ return w.codePointAt() }) ;
                 let j = 0 ;
                 let lastKeyCodeMatch = [] ;
                 let J = u.length ;
