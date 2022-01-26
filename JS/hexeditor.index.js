@@ -142,10 +142,12 @@ function ByteStream(ce,te,stat,srch){
     this.onsearch.addEventListener("keypress", function(e){
         if(e.keyCode == 13){ // VK_ENTER //
             try {
+                let j = 0 ;
                 let nPage = 0 ;
                 let _html_ = [] ;
-                let u = self.onsearch.value.split( ( chkByteSearch.checked ? /\s+/ : "" ) ).map((w)=>{ return w.codePointAt() }) ;
-                let j = 0 ;
+                let cbFlag = chkByteSearch.checked ;
+                let pttn = { true: (u)=>{ return __hexToUint8__[u] }, false: (u)=>{ return u.codePointAt() } }
+                let u = self.onsearch.value.split( ( cbFlag ? /\s+/ : "" ) ).map((w)=>{ return pttn[cbFlag](w) }) ;
                 let lastKeyCodeMatch = [] ;
                 let J = u.length ;
                 J > 0 && self.byteStream.map(
