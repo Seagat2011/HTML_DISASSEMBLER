@@ -131,12 +131,12 @@ var highlightQUEUE = new Set()
 
 document.onkeyup = document.onselectionchange = function(e){
     try {
-        var rangetextOBJ
+        let rangetextOBJ
         if (rangetextOBJ = getSelection()){
-            var __basenodeName__ = `${rangetextOBJ.baseNode.parentElement.localName}`
-            var __extentnodeName__ = `${rangetextOBJ.extentNode.parentElement.localName}`
-            var __baseNodeId__ = `${rangetextOBJ.baseNode.parentElement.id}`
-            var __extentNodeId__ = `${rangetextOBJ.extentNode.parentElement.id}`
+            let __basenodeName__ = `${rangetextOBJ.baseNode.parentElement.localName}`
+            let __extentnodeName__ = `${rangetextOBJ.extentNode.parentElement.localName}`
+            let __baseNodeId__ = `${rangetextOBJ.baseNode.parentElement.id}`
+            let __extentNodeId__ = `${rangetextOBJ.extentNode.parentElement.id}`
             if (!__extentNodeId__ || __extentNodeId__.match('^[^_]'))
                 return;
             if ( __basenodeName__ != __extentnodeName__ && highlightQUEUE.size)
@@ -158,20 +158,20 @@ document.onkeyup = document.onselectionchange = function(e){
                 `)();
                 highlightQUEUE.add( __baseNodeId__ )
                 try {
-                    var i = __baseNodeId__.match(/\d+/)[0]*1
-                    var I = __extentNodeId__.match(/\d+/)[0]*1
-                    var flag = i < I ? '1' : '0' ;
+                    let i = __baseNodeId__.match(/\d+/)[0]*1
+                    let I = __extentNodeId__.match(/\d+/)[0]*1
+                    let flag = i < I ? '1' : '0' ;
                     flag += i > I ? '1' : '0' ;
                     flag += i == I ? '1' : '0' ;
-                    var _set = {
+                    let _set = {
                         '100': 1,
                         '010':-1,
                         '001': 0,
                     }
-                    var iter = _set[ flag ] ;
+                    let iter = _set[ flag ] ;
                     do{
                         i += iter
-                        var _id_ = `_${i}`
+                        let _id_ = `_${i}`
                         if( !highlightQUEUE.has( _id_ ) ){
                             Function(`
                             ${_id_}[0].attributes.id.ownerElement.style['backgroundColor'] = '${HOVER}'
