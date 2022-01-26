@@ -60,6 +60,7 @@
 
 */
 
+var __DEBUGMODE__ = false
 var __decodeBYTE__ = {
     // Flags(5): MSB [ btnUTF8 btnUTF16 btnAMD64 btnX86IA32 btnX86IA64 ] LSB //
     '10000':function(v,w){ return charSet8[v] || `[0x${ v }]` }, // charSet8 //
@@ -69,7 +70,7 @@ var __decodeBYTE__ = {
     '00001':function(v,w){ return (x86IA64[v] + '\n' || charSet8[v] || `[0x${ v }]`) }, // x86IA64 //
 }
 
-function ByteStream(ce,te,stat){
+function ByteStream(ce,te,stat,srch){
     let self = this
     let decodeflag = ''
     let CSSHIGHLIGHT = 'yellow'
@@ -82,6 +83,7 @@ function ByteStream(ce,te,stat){
     this.code_editor = ce
     this.text_editor = te
     this.status_window = stat
+    this.onsearch = srch
     this.pageResizeFactor = (
     window.innerWidth /* 1366 */ * 
     window.innerHeight /* 768 */ ) /
@@ -127,7 +129,7 @@ function ByteStream(ce,te,stat){
                 self.pages.last = _p_0;
             }
         } catch ( e ) {
-            console.log( e )
+            __DEBUGMODE__ && console.log( e )
         }
     }
     this.proceed = function(u){
@@ -136,6 +138,46 @@ function ByteStream(ce,te,stat){
         } else if(self.intEnableWorker){
             clearInterval( self.intEnableWorker )
         }
+    }
+    this.onsearch.addEventListener("keypress", function(e){
+        if(e.keyCode == 13){ // VK_ENTER //
+            try {
+                let nPage = 0 ;
+                let _html_ = [] ;
+                let u = self.onsearch.value.split("").map((w)=>{ return w.codePointAt() }) ;
+                let j = 0 ;
+                let lastKeyCodeMatch = [] ;
+                let J = u.length ;
+                J > 0 && self.byteStream.map(
+                function(w,i,me){
+                    self.incrPAGE(i) && ++nPage ;
+                    if(j==J){
+                       _html_.push( nPage.asTAG('page',`p_${nPage} onclick="__file__.bkgWorkerLoadPage(${nPage}, this)"`) ) ;
+                        lastKeyCodeMatch = [] ;
+                        j = 0 ;
+                    } else if (w == u[j]) {
+                        let len = lastKeyCodeMatch.length || 0 
+                        if(len > 0 && lastKeyCodeMatch[len-1] + 1 == i){
+                            lastKeyCodeMatch.push(i)
+                            j++
+                        } else {
+                            lastKeyCodeMatch = [i]
+                            j = 1
+                        }
+                    } else if(lastKeyCodeMatch.length > 0){
+                        lastKeyCodeMatch = []
+                        j = 0
+                    }
+                    return w
+                }) ;
+                ppanel_srch.innerHTML = _html_.join('')
+            } catch(e) {
+                __DEBUGMODE__ && console.log(e) 
+            }
+        }
+    }, 1)
+    this.incrPAGE = function(i){
+        return (i%self.byteOffset == 0)
     }
 }
 
@@ -189,15 +231,15 @@ ByteStream.prototype.__byteStream__ = function (putget, decodeflag){
         function(v){
             let I = xhr.response.byteLength ;
             let J = 0 ;
-            let _html = [] ;
+            let _html_ = [] ;
             self.pages = [] ;
             self.byteStream = new Uint8Array( xhr.response ) ;
             for(let i=0; i<I; i++){
                 if(i%self.byteOffset == 0){
-                  _html.push( self.pages.push({ _from:i, _to:i+self.byteOffset }).asTAG('page',`p_${J} onclick="__file__.bkgWorkerLoadPage(${J++}, this)"`) )
+                  _html_.push( self.pages.push({ _from:i, _to:i+self.byteOffset }).asTAG('page',`p_${J} onclick="__file__.bkgWorkerLoadPage(${J++}, this)"`) )
                 }
             }
-            ppanel.innerHTML = _html.join('')
+            ppanel.innerHTML = _html_.join('')
             self.bkgWorkerLoadPage( 0 ) // page 1 //
             return "Ready"  // 4 DONE //
           },
@@ -240,7 +282,7 @@ ByteStream.prototype.openDumpStream = function (w, f){
     }
   } 
   catch(e){
-    console.log(e)
+    __DEBUGMODE__ && console.log(e)
   }
 }
 
@@ -252,6 +294,6 @@ ByteStream.prototype.saveDumpStream = function (w){
     }
   } 
   catch(e){
-    console.log(e)
+    // console.log(e) //
   }
 }
