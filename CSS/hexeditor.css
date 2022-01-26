@@ -14,6 +14,7 @@ code {
   outline: none;
   display: inline;
   float: left;
+  margin-top: 5px;
 }
 
 source {
@@ -25,12 +26,13 @@ source {
   outline: none;
   display: inline;
   float: right;
+  margin-top: 5px;
 }
 
 editorAttributes {
-    top: 125px;
+    /*top: 125px;*/
     left: 10px;
-    position: absolute;
+    /*position: absolute;*/
 }
 
 byte {
