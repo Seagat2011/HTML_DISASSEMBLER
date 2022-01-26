@@ -1,3 +1,10 @@
+if (w == u[j]) {
+    i_lastKeyCodeMatch == i-1 ? j++ : (j=0) ;
+    i_lastKeyCodeMatch = i
+} else {
+    j=0
+    i_lastKeyCodeMatch = i
+}
 //
     this.codeStream = 0x00
     this.textStream = ""
