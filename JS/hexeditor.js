@@ -1,8 +1,9 @@
 
+var __DEBUGMODE_2__ = false
 var __emit__ = console.log
 // Flags(5): MSB [ btnUTF8 btnUTF16 btnAMD64 btnX86IA32 btnX86IA64 ] LSB //
 var __flags__ = '10000'
-var __file__ = new ByteStream(byteresult, sourceresult, loadstatus)
+var __file__ = new ByteStream(byteresult, sourceresult, loadstatus, btnSearch)
 var __fn__ = ''
 
 var __status__ = {
@@ -181,13 +182,15 @@ document.onkeyup = document.onselectionchange = function(e){
                         }
                     } while (i!=I);
                 } catch(err) {
-                    __emit__( err )
+                    __DEBUGMODE_2__ && __emit__( err )
                 }
                 !intVAL && (intVAL = setInterval(flushHighlightQueue,1))
             //}
             return
         }
-    } catch (err) { __emit__( err ) }
+    } catch (err) { 
+        __DEBUGMODE_2__ && __emit__( err ) 
+    }
 }
 
 function flushHighlightQueue(resetQueue){
