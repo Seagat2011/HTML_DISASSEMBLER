@@ -1,5 +1,5 @@
 
-body {
+.default, body {
   font-style : normal;
   font-family : monospace;
   font-size : 10pt;
@@ -28,7 +28,7 @@ source {
 }
 
 editorAttributes {
-    top: 729px;
+    top: 105px;
     left: 10px;
     position: absolute;
 }
