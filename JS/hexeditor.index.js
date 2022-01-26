@@ -70,10 +70,10 @@ var __decodeBYTE__ = {
 }
 
 function ByteStream(ce,te,stat){
-    var self = this
-    var decodeflag = ''
-    var CSSHIGHLIGHT = 'yellow'
-    var CSSDEFAULT = 'white'
+    let self = this
+    let decodeflag = ''
+    let CSSHIGHLIGHT = 'yellow'
+    let CSSDEFAULT = 'white'
     this.url = ""
     this.pages = []
     this.intEnableWorker = 0
@@ -92,10 +92,10 @@ function ByteStream(ce,te,stat){
     this.defaultOffset ;
     this.bkgWorkerLoadPage = function(idx,u){
         try {
-            var decodeBYTE = __decodeBYTE__[self.decodeflag];
-            var stride = self.pages[idx]
-            var _code = [] ;
-            var _text = [] ;
+            let decodeBYTE = __decodeBYTE__[self.decodeflag];
+            let stride = self.pages[idx]
+            let _code = [] ;
+            let _text = [] ;
             self
                 .byteStream
                 .slice(stride._from,stride._to)
@@ -142,10 +142,10 @@ function ByteStream(ce,te,stat){
 ByteStream.prototype = {}
 
 ByteStream.prototype.__byteStream__ = function (putget, decodeflag){
-  var self = this
-  var xhr = new XMLHttpRequest()
-  var url = this.url
-  var async = true
+  let self = this
+  let xhr = new XMLHttpRequest()
+  let url = this.url
+  let async = true
   if(putget === "GET"){
     self.decodeflag = decodeflag
     xhr.overrideMimeType("application/octet-stream");
@@ -158,7 +158,7 @@ ByteStream.prototype.__byteStream__ = function (putget, decodeflag){
         // e //
     }
     xhr.onreadystatechange = function(e){
-      var banner = [
+      let banner = [
         function(){
           return "Processing file..." // 0 UNSENT
           }, 
@@ -169,7 +169,7 @@ ByteStream.prototype.__byteStream__ = function (putget, decodeflag){
           return "Initializing..."    // 2 HEADERS_RECEIVED
           },
         function(v){
-          var status = {
+          let status = {
             PUT:function(){
               return "Saving file..."
               },
@@ -177,7 +177,7 @@ ByteStream.prototype.__byteStream__ = function (putget, decodeflag){
               return "Loading file..."
               },
             default:function(w){
-              var msg = {
+              let msg = {
                 PUT:"SAVE",
                 GET:"LOAD",
                 }
@@ -187,9 +187,9 @@ ByteStream.prototype.__byteStream__ = function (putget, decodeflag){
           return status[v]() || status.default(v)    // 3 LOADING //
           },
         function(v){
-            var I = xhr.response.byteLength ;
-            var J = 0 ;
-            var _html = [] ;
+            let I = xhr.response.byteLength ;
+            let J = 0 ;
+            let _html = [] ;
             self.pages = [] ;
             self.byteStream = new Uint8Array( xhr.response ) ;
             for(let i=0; i<I; i++){
@@ -214,7 +214,7 @@ ByteStream.prototype.__byteStream__ = function (putget, decodeflag){
     }
     else
     if(code01.checked){
-      var formData = new FormData()
+      let formData = new FormData()
       xhr.send(self.text_editor.innerText)
     }
     else
@@ -225,7 +225,7 @@ ByteStream.prototype.__byteStream__ = function (putget, decodeflag){
 }
 
 ByteStream.prototype.openDumpStream = function (w, f){
-  var self = this
+  let self = this
   try{
     if(w && w.name && ((w.name != self.url) || (self.lastFlag != f)) ){
       self.url = w.name
