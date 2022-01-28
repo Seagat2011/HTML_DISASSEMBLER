@@ -1,5 +1,16 @@
 
 
+register_name {
+    display: block;
+    padding-left: 139px;
+}
+
+editorAttributes {
+    /*top: 125px;*/
+    left: 10px;
+    /*position: absolute;*/
+}
+
 textarea {
   width : /*540px;*/49%;
   height : /*700px;*/73%;
