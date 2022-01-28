@@ -85,5 +85,19 @@ register_value {
 }
 
 register_name {
-    padding-right: 8px;
+    padding-right: 10px;
+}
+
+register_name_small {
+    padding-right: 17px;
+}
+
+inline_register_name_small {
+    padding-left: 10px;
+    padding-right: 17px;
+}
+
+inline_register_name {
+    padding-left: 10px;
+    padding-right: 10px;
 }
