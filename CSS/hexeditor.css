@@ -101,3 +101,19 @@ inline_register_name {
     padding-left: 10px;
     padding-right: 10px;
 }
+
+menu {
+    display: inline;
+    padding-right: 40px;
+    padding-inline-start: 0px;
+}
+
+menu_bar {
+    cursor: pointer;
+    display: block;
+}
+
+menu:hover {
+    color: white;
+    background-color: cadetblue;
+}
