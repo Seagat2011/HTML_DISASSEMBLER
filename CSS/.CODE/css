@@ -1,4 +1,8 @@
 
+<div  style="    width: 100%;
+    overflow-x: scroll;
+    white-space: nowrap;
+">
 
 register_name {
     display: block;
