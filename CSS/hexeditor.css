@@ -30,9 +30,7 @@ source {
 }
 
 editorAttributes {
-    /*top: 125px;*/
     left: 10px;
-    /*position: absolute;*/
 }
 
 byte {
@@ -81,4 +79,11 @@ page:hover {
     text-decoration: underline;
     color: black;
     font-weight: bold;
+}
+
+register_value {
+}
+
+register_name {
+    padding-right: 8px;
 }
