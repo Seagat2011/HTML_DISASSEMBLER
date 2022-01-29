@@ -1,4 +1,11 @@
 
+
+menu:hover {
+    color: white;
+    background-color: rgba(115,217,234,1.0);
+}
+
+
 <div  style="    width: 100%;
     overflow-x: scroll;
     white-space: nowrap;
