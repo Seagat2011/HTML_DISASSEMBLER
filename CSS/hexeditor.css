@@ -82,38 +82,43 @@ page:hover {
 }
 
 register_value {
+    color: lightgrey;
 }
 
 register_name {
+    color: lightgrey;
     padding-right: 10px;
 }
 
 register_name_small {
+    color: lightgrey;
     padding-right: 17px;
 }
 
 inline_register_name_small {
+    color: lightgrey;
     padding-left: 10px;
     padding-right: 17px;
 }
 
 inline_register_name {
+    color: lightgrey;
     padding-left: 10px;
     padding-right: 10px;
 }
 
 menu {
+    color: lightgrey;
     display: inline;
-    padding-right: 40px;
-    padding-inline-start: 0px;
+    padding-right: 28px;
+    padding-inline-start: 28px;
+}
+
+menu:hover {
+    color: black;
 }
 
 menu_bar {
     cursor: pointer;
     display: block;
-}
-
-menu:hover {
-    color: white;
-    background-color: cadetblue;
 }
