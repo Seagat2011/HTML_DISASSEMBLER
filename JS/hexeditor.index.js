@@ -56,7 +56,7 @@
     1.0.0.0
     
   NOTES
-    Intel-32/64 architecture supports LITTLE-ENDIAN machines (byte words numbered from least significant byte) 
+    Intel-32/64 architecture employs LITTLE-ENDIAN machine architecture (byte words ordered from least to most-significant byte) 
 
 */
 
