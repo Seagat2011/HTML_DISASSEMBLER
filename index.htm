@@ -25,10 +25,13 @@
     padding-bottom: 15px;
 ">
 <menu_bar>
-<menu>Decode</menu>
-<menu>Registers</menu>
-<menu>Memory</menu>
+<menu class="clickedradio" id=mnuBytesPlus>Bytes + Disassembly</menu>
+<menu id=mnuBytes>Bytes</menu>
+<menu id=mnuDisassembly>Disassembly</menu> | <menu id=mnuDecode>Address</menu>
+<menu id=mnuRegisters>Registers</menu>
+<menu id=mnuMemory>Memory</menu>
 </menu_bar>
+
 </td></tr>
 
 <tr>
@@ -45,7 +48,13 @@
 <div id=divAMD64 style="display: inline; cursor: pointer;"><input id=btnAMD64 type=radio /><label style="cursor: hand;"> > AMD64 decode </label></div>
 <div id=divX86IA32 style="display: inline; cursor: pointer;"><input id=btnX86IA32 type=radio /><label style="cursor: hand;"> > Intel x86 32-bit decode </label></div>
 <div id=divX86IA64 style="display: inline; cursor: pointer;"><input id=btnX86IA64 type=radio /><label style="cursor: hand;"> > Intel x86 64-bit decode </label></div>
-<div style="padding-top: 5px;"><input id=btnSearch class=default style="width: 188%; outline: none; border-color: lightgrey 1 1 1 1; spellcheck: false;" type=text placeholder="Search [ RegExp ]"><input id=chkByteSearch class=default style="margin: 3px;" type=checkbox><label style="cursor: pointer" onclick="chkByteSearch.checked = !chkByteSearch.checked"> bytes </label></div>
+<div style="padding-top: 5px;">
+<input id=btnSearch class=default style="width: 188%; outline: none;" spellcheck=false type=text placeholder="Search [ RegExp ]">
+<input id=chkByteSearch class=default style="margin: 3px;" type=checkbox>
+<label style="cursor: pointer" onclick="chkByteSearch.checked = !chkByteSearch.checked"> byte pattern </label>
+<br>
+<menu id=mnuSearch class="clicked" style="cursor: pointer">=> Search =></menu>
+</div>
 </div>
 <div id=loadstatus style="float:right">Ready</div>
 </td>
@@ -63,6 +72,7 @@
 <editorAttributes>
 <br>
 <div id=frm00>
+
 <code id=byteresult spellcheck=false contenteditable></code>
 <source id=sourceresult spellcheck=false contenteditable></source>
 </div>
@@ -76,14 +86,176 @@
     cursor: pointer;
 "></pagepanel>
 <page id="_p_ln">&gt;</page><page id="_p_ll">&gt;&gt;</page>Page</pagepanel>
+<div id=frm01 style="
+    display: none;
+">
+
 <div>
+
+<pagepanel style="
+    overflow-x: clip ;
+">CPU<page id="_cpu_ffsrch">&lt;&lt;</page><page id="_cpu_fnsrch">&lt;</page>
+<pagepanel id=cpupanel_srch style="
+    padding-top: 0;
+    cursor: pointer;
+"><page> 1 </page><page> 2 </page><page> 3 </page><page> 4 </page></pagepanel>
+<page id="_cpu_lnsrch">&gt;</page><page id="_cpu_llsrch">&gt;&gt;</page>CPU</pagepanel>
+
+<br><br>
+
+<div>
+Register
+<br><br>
+64-BIT<br>
+<div><register_name>RAX</register_name><register_value>0000 0000 0000 0000<inline_register_name>EAX</inline_register_name>0000 0000<inline_register_name>AX AH</inline_register_name>0000<inline_register_name>AL</inline_register_name>0000</register_value></div>
+<div><register_name>RBX</register_name><register_value>0000 0000 0000 0000<inline_register_name>EBX</inline_register_name>0000 0000<inline_register_name>BX BH</inline_register_name>0000<inline_register_name>BL</inline_register_name>0000</register_value></div>
+<div><register_name>RCX</register_name><register_value>0000 0000 0000 0000<inline_register_name>ECX</inline_register_name>0000 0000<inline_register_name>CX CH</inline_register_name>0000<inline_register_name>CL</inline_register_name>0000</register_value></div>
+<div><register_name>RDX</register_name><register_value>0000 0000 0000 0000<inline_register_name>EDX</inline_register_name>0000 0000<inline_register_name>DX DH</inline_register_name>0000<inline_register_name>DL</inline_register_name>0000</register_value></div>
+<div><register_name>REX</register_name><register_value>0000 0000 0000 0000<inline_register_name>EEX</inline_register_name>0000 0000<inline_register_name>EX EH</inline_register_name>0000<inline_register_name>EL</inline_register_name>0000</register_value></div>
+<br>
+<div><register_name_small>R0</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name_small>R1</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name_small>R2</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name_small>R3</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+
+<div><register_name_small>R4</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name_small>R5</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name_small>R6</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name_small>R7</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+
+<div><register_name_small>R8</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name_small>R9</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>R10</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>R11</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>R12</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<br>
+<div><register_name>EIP</register_name><register_value>0000 0000 0000 0000<inline_register_name>IP</inline_register_name>0000 0000 0000 0000</register_value></div>
+<div><register_name>ESP</register_name><register_value>0000 0000 0000 0000<inline_register_name>SP</inline_register_name>0000 0000 0000 0000</register_value></div>
+<div><register_name>ESR</register_name><register_value>0000 0000 0000 0000<inline_register_name>SR</inline_register_name>0000 0000 0000 0000</register_value></div>
+<div><register_name>ECR</register_name><register_value>0000 0000 0000 0000<inline_register_name>CR</inline_register_name>0000 0000 0000 0000</register_value></div>
+<div><register_name>ESI</register_name><register_value>0000 0000 0000 0000<inline_register_name>SI</inline_register_name>0000 0000 0000 0000</register_value></div>
+<div><register_name>EDI</register_name><register_value>0000 0000 0000 0000<inline_register_name>DI</inline_register_name>0000 0000 0000 0000</register_value></div>
+<br>
+256-BIT [AVX512]<br>
+<div><register_name_small>YMM0</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name_small>XMM0</inline_register_name_small>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name_small>YMM1</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name_small>XMM1</inline_register_name_small>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name_small>YMM2</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name_small>XMM2</inline_register_name_small>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name_small>YMM3</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name_small>XMM3</inline_register_name_small>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name_small>YMM4</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name_small>XMM4</inline_register_name_small>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name_small>YMM5</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name_small>XMM5</inline_register_name_small>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name_small>YMM6</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name_small>XMM6</inline_register_name_small>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name_small>YMM7</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name_small>XMM7</inline_register_name_small>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+
+<div><register_name_small>YMM8</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name_small>XMM8</inline_register_name_small>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name_small>YMM9</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name_small>XMM9</inline_register_name_small>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>YMM10</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name>XMM10</inline_register_name>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>YMM11</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name>XMM11</inline_register_name>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+
+<div><register_name>YMM12</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name>XMM12</inline_register_name>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>YMM13</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name>XMM13</inline_register_name>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>YMM14</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name>XMM14</inline_register_name>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>YMM15</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name>XMM15</inline_register_name>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+
+<div><register_name>YMM16</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name>XMM16</inline_register_name>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>YMM17</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name>XMM17</inline_register_name>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>YMM18</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name>XMM18</inline_register_name>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>YMM19</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name>XMM19</inline_register_name>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+
+<div><register_name>YMM20</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name>XMM20</inline_register_name>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>YMM21</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name>XMM21</inline_register_name>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>YMM22</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name>XMM22</inline_register_name>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>YMM23</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name>XMM23</inline_register_name>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+
+<div><register_name>YMM24</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name>XMM24</inline_register_name>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>YMM25</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name>XMM25</inline_register_name>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>YMM26</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name>XMM26</inline_register_name>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>YMM27</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name>XMM27</inline_register_name>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+
+<div><register_name>YMM28</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name>XMM28</inline_register_name>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>YMM29</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name>XMM29</inline_register_name>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>YMM30</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name>XMM30</inline_register_name>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>YMM31</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000<inline_register_name>XMM31</inline_register_name>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+
+<div><br>
+AVX512<br>
+<div><register_name_small>ZMM0</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name_small>ZMM1</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name_small>ZMM2</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name_small>ZMM3</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+
+<div><register_name_small>ZMM4</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name_small>ZMM5</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name_small>ZMM6</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name_small>ZMM7</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+
+<div><register_name_small>ZMM8</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name_small>ZMM9</register_name_small><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>ZMM10</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>ZMM11</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+
+<div><register_name>ZMM12</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>ZMM13</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>ZMM14</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>ZMM15</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+
+<div><register_name>ZMM16</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>ZMM17</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>ZMM18</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>ZMM19</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+
+<div><register_name>ZMM20</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>ZMM21</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>ZMM22</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>ZMM23</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+
+<div><register_name>ZMM24</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>ZMM25</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>ZMM26</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>ZMM27</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+
+<div><register_name>ZMM28</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>ZMM29</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>ZMM30</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>ZMM31</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+</div>
+
+<div><br>
+MASK REGISTERS 64-BIT<br>
+<div><register_name>K0</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>K1</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>K2</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>K3</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>K4</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>K5</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>K6</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+<div><register_name>K7</register_name><register_value>0000 0000 0000 0000 0000 0000 0000 0000</register_value></div>
+</div>
+
+</div>
+
+<br>
+
+<register_name>Color Chart</register_name>
+<hr>
+<div style="font-weight:bold; border: 0.5px groove;">Register Addressing Mode</div>
+<div style="background-color: yellow">Current Instruction</div>
+<div style="background-color: aquamarine">ALU Operand</div>
+<div style="background-color: lightgreen">ALU Result (Destination)</div>
+<div style="background-color: lightblue">Move Operand</div>
+<div style="background-color: darkturquoise">Move Result (Destination)</div>
+<div style="background-color: red">Exception!</div>
+
+</div>
+
+</div>
+
+<div>
+<br>
 <input id=btnSave type=button value=" Save " />
 <br>
 <br>
 <input id=btnSaveStream type=file />
-<div id=divCode00 style="display: inline;"><input id=code00 type="radio" checked=TRUE /> <label style="cursor: hand;"> > byte code + assembly</label> </div> 
-<div id=divCode01 style="display: inline;"><input id=code01 type="radio" /> <label style="cursor: hand;"> > assembly</label> </div> 
-<div id=divCode02 style="display: inline;"><input id=code02 type="radio" /> <label style="cursor: hand;"> > byte code</label> </div>
 </div>
+
 <footer></footer>
 </html>
