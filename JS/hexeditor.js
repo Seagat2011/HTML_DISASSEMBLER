@@ -65,30 +65,7 @@ byteresult.ondrop = function(e){
     e.preventDefault()
 }
 
-divCode00.onclick = function(e){
-    code00.checked=true
-    code01.checked=code02.checked=false
-    byteresult.style.display=
-    sourceresult.style.display='inline'
-    byteresult.style.width = 
-    sourceresult.style.width = '49%'
-}
-
-divCode01.onclick = function(e){
-    code01.checked=true
-    code00.checked=code02.checked=false
-    byteresult.style.display='none'
-    sourceresult.style.display='inline'
-    sourceresult.style.width = '100%'
-}
-
-divCode02.onclick = function(e){
-    code02.checked=true
-    code00.checked=code01.checked=false
-    byteresult.style.display='inline'
-    sourceresult.style.display='none'
-    byteresult.style.width = '100%'
-}
+mnuSearch.onclick =  __file__.onsearch.start
 
 divUTF8.onclick = function(e){
     __flags__ = '10000'
@@ -204,5 +181,73 @@ function flushHighlightQueue(resetQueue){
         }
         highlightQUEUE = new Set()
         !resetQueue && clearInterval( intVAL )
+    }
+}
+
+
+
+mnuDecode.onclick = function(){
+    let self = this ;
+    if(self.classList.contains("clicked")){
+        self.classList.remove("clicked")
+    } else {
+        self.classList.add("clicked")
+    }
+}
+
+mnuRegisters.onclick = function(){
+    let self = this ;
+    if(self.classList.contains("clicked")){
+        self.classList.remove("clicked")
+        frm01.style.display = 'none'
+    } else {
+        self.classList.add("clicked")
+        frm01.style.display = 'inline'
+    }
+}
+
+mnuMemory.onclick = function(){
+    let self = this ;
+    if(self.classList.contains("clicked")){
+        self.classList.remove("clicked")
+    } else {
+        self.classList.add("clicked")
+    }
+}
+
+mnuBytesPlus.onclick = function(){
+    let self = this ;
+    if(!self.classList.contains("clickedradio")){
+        byteresult.style.display=
+        sourceresult.style.display='inline'
+        byteresult.style.width = 
+        sourceresult.style.width = '49%'
+        self.classList.add("clickedradio")
+        mnuBytes.classList.remove("clickedradio")
+        mnuDisassembly.classList.remove("clickedradio")
+    }
+}
+
+mnuBytes.onclick = function(){
+    let self = this ;
+    if(!self.classList.contains("clickedradio")){
+        sourceresult.style.display='none'
+        byteresult.style.display='inline'
+        byteresult.style.width = '100%'
+        self.classList.add("clickedradio")
+        mnuBytesPlus.classList.remove("clickedradio")
+        mnuDisassembly.classList.remove("clickedradio")
+    }
+}
+
+mnuDisassembly.onclick = function(){
+    let self = this ;
+    if(!self.classList.contains("clickedradio")){
+        byteresult.style.display='none'
+        sourceresult.style.display='inline'
+        sourceresult.style.width = '100%'
+        self.classList.add("clickedradio")
+        mnuBytes.classList.remove("clickedradio")
+        mnuBytesPlus.classList.remove("clickedradio")
     }
 }
