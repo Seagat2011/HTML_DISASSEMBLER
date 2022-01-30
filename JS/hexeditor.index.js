@@ -139,45 +139,43 @@ function ByteStream(ce,te,stat,srch){
             clearInterval( self.intEnableWorker )
         }
     }
-    this.onsearch.addEventListener("keypress", function(e){
-        if(e.keyCode == 13){ // VK_ENTER //
-            try {
-                let j = 0 ;
-                let nPage = 0 ;
-                let _html_ = [] ;
-                let cbFlag = chkByteSearch.checked ;
-                let pttn = { true: (u)=>{ return __hexToUint8__[u] }, false: (u)=>{ return u.codePointAt() } }
-                let u = self.onsearch.value.split( ( cbFlag ? /\s+/ : "" ) ).map((w)=>{ return pttn[cbFlag](w) }) ;
-                let lastKeyCodeMatch = [] ;
-                let J = u.length ;
-                J > 0 && self.byteStream.map(
-                function(w,i,me){
-                    self.incrPAGE(i) && ++nPage ;
-                    if(j==J){
-                       _html_.push( nPage.asTAG('page',`p_${nPage-1} onclick="__file__.bkgWorkerLoadPage(${nPage-1}, this)"`) ) ;
-                        lastKeyCodeMatch = [] ;
-                        j = 0 ;
-                    } else if (w == u[j]) {
-                        let len = lastKeyCodeMatch.length || 0 
-                        if(len > 0 && lastKeyCodeMatch[len-1] + 1 == i){
-                            lastKeyCodeMatch.push(i)
-                            j++
-                        } else {
-                            lastKeyCodeMatch = [i]
-                            j = 1
-                        }
-                    } else if(lastKeyCodeMatch.length > 0){
-                        lastKeyCodeMatch = []
-                        j = 0
+    this.onsearch.start = function(e){
+        try {
+            let j = 0 ;
+            let nPage = 0 ;
+            let _html_ = [] ;
+            let cbFlag = chkByteSearch.checked ;
+            let pttn = { true: (u)=>{ return __hexToUint8__[u] }, false: (u)=>{ return u.codePointAt() } }
+            let u = self.onsearch.value.split( ( cbFlag ? /\s+/ : "" ) ).map((w)=>{ return pttn[cbFlag](w) }) ;
+            let lastKeyCodeMatch = [] ;
+            let J = u.length ;
+            J > 0 && self.byteStream.map(
+            function(w,i,me){
+                self.incrPAGE(i) && ++nPage ;
+                if(j==J){
+                   _html_.push( nPage.asTAG('page',`p_${nPage-1} onclick="__file__.bkgWorkerLoadPage(${nPage-1}, this)"`) ) ;
+                    lastKeyCodeMatch = [] ;
+                    j = 0 ;
+                } else if (w == u[j]) {
+                    let len = lastKeyCodeMatch.length || 0 
+                    if(len > 0 && lastKeyCodeMatch[len-1] + 1 == i){
+                        lastKeyCodeMatch.push(i)
+                        j++
+                    } else {
+                        lastKeyCodeMatch = [i]
+                        j = 1
                     }
-                    return w
-                }) ;
-                ppanel_srch.innerHTML = _html_.join('')
-            } catch(e) {
-                __DEBUGMODE__ && console.log(e) 
-            }
+                } else if(lastKeyCodeMatch.length > 0){
+                    lastKeyCodeMatch = []
+                    j = 0
+                }
+                return w
+            }) ;
+            ppanel_srch.innerHTML = _html_.join('')
+        } catch(e) {
+            __DEBUGMODE__ && console.log(e) 
         }
-    }, 1)
+    }
     this.incrPAGE = function(i){
         return (i%self.byteOffset == 0)
     }
