@@ -110,12 +110,23 @@ inline_register_name {
 menu {
     color: lightgrey;
     display: inline;
-    padding-right: 28px;
-    padding-inline-start: 28px;
+    padding: 2px 28px 3px 28px;
+    border-radius: 5px; 
+    line-height: 3em;
+}
+
+.clickedradio {
+    color: white;
+    background-color: lightgray;
 }
 
 menu:hover {
-    color: black;
+    font-weight: bold;
+}
+
+/*menu*/.clicked {
+    color: white;
+    background-color: lightslategrey;
 }
 
 menu_bar {
