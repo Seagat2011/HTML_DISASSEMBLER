@@ -1,4 +1,9 @@
 
+menu:hover {
+    /* color: lightblue; */
+    font-weight: bold;
+    /* background-color: lightslategrey; */
+}
 
 menu:hover {
     color: white;
