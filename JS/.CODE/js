@@ -1,3 +1,73 @@
+//
+    this.onsearch.addEventListener("keypress", function(e){
+        if(e.keyCode == 13){ // VK_ENTER //
+            try {
+                let j = 0 ;
+                let nPage = 0 ;
+                let _html_ = [] ;
+                let cbFlag = chkByteSearch.checked ;
+                let pttn = { true: (u)=>{ return __hexToUint8__[u] }, false: (u)=>{ return u.codePointAt() } }
+                let u = self.onsearch.value.split( ( cbFlag ? /\s+/ : "" ) ).map((w)=>{ return pttn[cbFlag](w) }) ;
+                let lastKeyCodeMatch = [] ;
+                let J = u.length ;
+                J > 0 && self.byteStream.map(
+                function(w,i,me){
+                    self.incrPAGE(i) && ++nPage ;
+                    if(j==J){
+                       _html_.push( nPage.asTAG('page',`p_${nPage-1} onclick="__file__.bkgWorkerLoadPage(${nPage-1}, this)"`) ) ;
+                        lastKeyCodeMatch = [] ;
+                        j = 0 ;
+                    } else if (w == u[j]) {
+                        let len = lastKeyCodeMatch.length || 0 
+                        if(len > 0 && lastKeyCodeMatch[len-1] + 1 == i){
+                            lastKeyCodeMatch.push(i)
+                            j++
+                        } else {
+                            lastKeyCodeMatch = [i]
+                            j = 1
+                        }
+                    } else if(lastKeyCodeMatch.length > 0){
+                        lastKeyCodeMatch = []
+                        j = 0
+                    }
+                    return w
+                }) ;
+                ppanel_srch.innerHTML = _html_.join('')
+            } catch(e) {
+                __DEBUGMODE__ && console.log(e) 
+            }
+        }
+    }, 1)
+//
+<div id=divCode00 style="display: inline;"><input id=code00 type="radio" checked=TRUE /> <label style="cursor: hand;"> > bytes + disassembly </label> </div> 
+<div id=divCode01 style="display: inline;"><input id=code01 type="radio" /> <label style="cursor: hand;"> > disassembly </label> </div> 
+<div id=divCode02 style="display: inline;"><input id=code02 type="radio" /> <label style="cursor: hand;"> > bytes </label> </div>
+
+divCode00.onclick = function(e){
+    code00.checked=true
+    code01.checked=code02.checked=false
+    byteresult.style.display=
+    sourceresult.style.display='inline'
+    byteresult.style.width = 
+    sourceresult.style.width = '49%'
+}
+
+divCode01.onclick = function(e){
+    code01.checked=true
+    code00.checked=code02.checked=false
+    byteresult.style.display='none'
+    sourceresult.style.display='inline'
+    sourceresult.style.width = '100%'
+}
+
+divCode02.onclick = function(e){
+    code02.checked=true
+    code00.checked=code01.checked=false
+    byteresult.style.display='inline'
+    sourceresult.style.display='none'
+    byteresult.style.width = '100%'
+}
+//
 if (w == u[j]) {
     i_lastKeyCodeMatch == i-1 ? j++ : (j=0) ;
     i_lastKeyCodeMatch = i
